@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -27,9 +28,13 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <h5>Contact</h5>
-          <p className="muted">concierge@travique.com</p>
-          <div className="socials">𝕏 &nbsp; f &nbsp; 📸 &nbsp; in</div>
+          <h5>Quick Links</h5>
+          <ul>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/faq">FAQ</Link></li>
+            <li><Link to="/contact">Contact Us</Link></li>
+            <li><Link to="/">Home</Link></li>
+          </ul>
         </div>
       </div>
       <div className="container copyright">© 2026 Travique Premium Private Ltd. All Rights Reserved.</div>
