@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import travique from '../Assests/Images/travique.mp4';
+
 
 const slides = [
   { img: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=2000&q=80', alt: 'Luxury Beach' },
