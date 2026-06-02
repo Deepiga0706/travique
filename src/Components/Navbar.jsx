@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import ProfileDropdown from './ProfileDropdown';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Home' },
@@ -13,13 +14,35 @@ const NAV_ITEMS = [
 ];
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = React.useState(()=>{
+    try{ return JSON.parse(localStorage.getItem('travique_current_user')||'null') }catch(e){return null}
+  });
+
+  React.useEffect(()=>{
+    function onAuth(){
+      try{ setUser(JSON.parse(localStorage.getItem('travique_current_user')||'null')) }catch(e){setUser(null)}
+    }
+    window.addEventListener('travique-auth', onAuth);
+    return ()=> window.removeEventListener('travique-auth', onAuth);
+  },[])
+
   return (
     <header className="nav-wrap">
-      <div className="nav-container">
+      <div className={`nav-container ${open ? 'open' : ''}`}>
         <NavLink className="brand" to="/" aria-label="Travique Home">
           <span className="brand-dark">Trav</span>
           <span className="brand-gold">ique</span>
         </NavLink>
+
+        <button
+          className="nav-toggle"
+          aria-label="Toggle navigation"
+          aria-expanded={open}
+          onClick={() => setOpen(o => !o)}
+        >
+          ☰
+        </button>
 
         <nav className="nav-links" aria-label="Primary Navigation">
           {NAV_ITEMS.map(item => (
@@ -27,6 +50,7 @@ export default function Navbar() {
               key={item.to}
               to={item.to}
               className={({ isActive }) => (isActive ? 'active' : '')}
+              onClick={() => setOpen(false)}
             >
               {item.label}
             </NavLink>
@@ -34,8 +58,11 @@ export default function Navbar() {
         </nav>
 
         <div className="nav-cta">
-          <button className="btn btn-outline">Sign In</button>
-          <button className="btn btn-primary">Get Started</button>
+          {!user ? (
+            <NavLink to="/login"><button className="btn btn-primary">Sign In</button></NavLink>
+          ) : (
+            <ProfileDropdown user={user} />
+          )}
         </div>
       </div>
     </header>

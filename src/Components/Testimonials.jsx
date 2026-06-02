@@ -1,28 +1,82 @@
-import React, { useState, useEffect } from 'react';
-
+import React from 'react';
+import group_trip from '../Assests/Images/group_trip.jpg';
+import rithanya from '../Assests/Images/rithanya.jpeg';
+import Family_trip from '../Assests/Images/Family_trip.jpeg';
+import IV from '../Assests/Images/IV.jpg';
 const data = [
-  { name: 'Priya Sharma', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80', text: 'Travique planned our honeymoon perfectly. Highly professional.', rating: 5 },
-  { name: 'Dr. Rajesh Kumar', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80', text: 'Best educational trip experience. Flawless coordination.', rating: 5 },
-  { name: 'Vikram Malhotra', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80', text: 'Operational management was incredible for our group.', rating: 5 }
+  {
+    name: 'Friends Tour',
+    photo: group_trip,
+    rating: 5,
+    location: 'Manali, India',
+    tripType: 'Friends Trip',
+    text: ' Our friends trip to Manali with Travique was an absolute blast! The itinerary was perfectly balanced with thrilling activities and relaxing moments, allowing us to bond and create unforgettable memories together.'
+  },
+  {
+    name: 'Rithanya',
+    photo: rithanya,
+    rating: 5,
+    location: 'Coimbatore, India',
+    tripType: 'Adventurous Trip-Manali',
+    text: 'Our Manali adventure trip with Travique was absolutely thrilling! From river rafting and paragliding to exploring the beautiful mountains, every activity was planned professionally and safely.'
+  },
+  {
+    name: 'Subika',
+    photo: Family_trip,
+    rating: 5,
+    location: 'Kashmir, India',
+    tripType: 'Family Trip',
+    text: 'Our family trip to Paris with Travique was unforgettable. They took care of every detail, from kid-friendly activities to comfortable accommodations, making it a stress-free and enjoyable experience for all of us.'
+  },
+  {
+    name: 'Industrial Visit',
+    photo: IV,
+    rating: 4,
+    location: 'Kochin, India',
+    tripType: 'Educational Trip',
+    text: 'Our educational trip to Kochin was well-organized and informative. The itinerary was thoughtfully planned, allowing us to explore the city’s rich culture and history while also providing ample time for relaxation and enjoyment.'
+  }
 ];
 
-export default function Testimonials() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI(n => (n + 1) % data.length), 5000);
-    return () => clearInterval(t);
-  }, []);
-
-  const cur = data[i];
+function Stars({ count = 5 }) {
   return (
-    <section className="container testimonials">
-      <h2 className="section-title">Customer Testimonials</h2>
-      <div className="testi-card">
-        <img src={cur.photo} alt={cur.name} />
-        <div className="testi-body">
-          <h4>{cur.name}</h4>
-          <div className="stars">{'★'.repeat(cur.rating)}</div>
-          <p className="muted">{cur.text}</p>
+    <div className="stars" aria-hidden>
+      {Array.from({ length: count }).map((_, i) => (
+        <span key={i}>★</span>
+      ))}
+    </div>
+  );
+}
+
+export default function Testimonials() {
+  return (
+    <section className="testimonials-section" aria-labelledby="testimonials-title">
+      <div className="container">
+        <h2 id="testimonials-title" className="section-title">Customer Testimonials</h2>
+        <div className="testi-grid">
+          {data.map((p, idx) => (
+            <article className="testi-card" key={idx}>
+              <div className="testi-media" style={{ backgroundImage: `url(${p.photo})` }} />
+
+              <div className="testi-content testimonial-content">
+                <header className="testi-header">
+                  <div className="quote">❝</div>
+                  <Stars count={p.rating} />
+                </header>
+
+                <div className="review-text">
+                  <p className="testi-text">{p.text}</p>
+                </div>
+
+                <div className="testi-footer reviewer-info">
+                  <div className="customer">
+                    <div className="cust-name">{p.name}</div>
+                    <div className="cust-meta">{p.location} • {p.tripType}</div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>

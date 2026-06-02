@@ -2,7 +2,6 @@ import React from 'react';
 import './styles/homepage.css';
 import Navbar from './Components/Navbar';
 import HeroSection from './Components/HeroSection';
-import SearchCard from './Components/SearchCard';
 import HolidayCategories from './Components/HolidayCategories';
 import Destinations from './Components/Destinations';
 import Features from './Components/Features';
@@ -17,7 +16,6 @@ export default function Homepage() {
       <Navbar />
       <main>
         <HeroSection />
-        <SearchCard />
         <HolidayCategories />
         <Destinations />
         <Features />

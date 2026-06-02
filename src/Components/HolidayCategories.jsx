@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   { title: 'Honeymoon Packages', img: 'https://static1.thetravelimages.com/wordpress/wp-content/uploads/2022/12/couple-on-a-honeymoon-in-the-maldives.JPG?auto=format&fit=crop&w=800&q=80', desc: 'Romantic secluded getaways' },
@@ -10,6 +11,7 @@ const categories = [
 ];
 
 export default function HolidayCategories() {
+  const navigate = useNavigate();
   return (
     <section id="categories" className="categories container">
       <h2 className="section-title">Featured Holiday Categories</h2>
@@ -20,7 +22,10 @@ export default function HolidayCategories() {
             <div className="card-body">
               <h3>{c.title}</h3>
               <p className="muted">{c.desc}</p>
-              <button className="btn btn-outline">Explore</button>
+              <button className="btn btn-outline" onClick={()=>{
+                const slug = c.title.toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,'');
+                navigate(`/${slug}`);
+              }}>Explore</button>
             </div>
           </article>
         ))}
