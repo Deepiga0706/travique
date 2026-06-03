@@ -13,19 +13,8 @@ const NAV_ITEMS = [
   { to: '/contact', label: 'Contact Us' }
 ];
 
-export default function Navbar() {
+export default function Navbar({ user, onLogout }) {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = React.useState(()=>{
-    try{ return JSON.parse(localStorage.getItem('travique_current_user')||'null') }catch(e){return null}
-  });
-
-  React.useEffect(()=>{
-    function onAuth(){
-      try{ setUser(JSON.parse(localStorage.getItem('travique_current_user')||'null')) }catch(e){setUser(null)}
-    }
-    window.addEventListener('travique-auth', onAuth);
-    return ()=> window.removeEventListener('travique-auth', onAuth);
-  },[])
 
   return (
     <header className="nav-wrap">
@@ -61,7 +50,7 @@ export default function Navbar() {
           {!user ? (
             <NavLink to="/login"><button className="btn btn-primary">Sign In</button></NavLink>
           ) : (
-            <ProfileDropdown user={user} />
+            <ProfileDropdown user={user} onLogout={onLogout} />
           )}
         </div>
       </div>

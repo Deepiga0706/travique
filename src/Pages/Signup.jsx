@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function getUsers(){
   try{ return JSON.parse(localStorage.getItem('travique_users')||'[]') }catch(e){return[]}
 }
 
-export default function Signup(){
+export default function Signup({ onAuth }){
   const [form,setForm] = useState({name:'',email:'',phone:'',password:'',confirm:''});
   const [err,setErr] = useState('');
   const navigate = useNavigate();
@@ -35,9 +35,11 @@ export default function Signup(){
     users.push(user);
     localStorage.setItem('travique_users', JSON.stringify(users));
     localStorage.setItem('travique_current_user', JSON.stringify(user));
-    window.dispatchEvent(new Event('travique-auth'));
+    if(typeof onAuth === 'function') onAuth(user);
     navigate('/');
   }
+
+  useEffect(()=>{ setErr('') }, [form])
 
   return (
     <div className="page auth-page">

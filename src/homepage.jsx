@@ -1,6 +1,5 @@
 import React from 'react';
 import './styles/homepage.css';
-import Navbar from './Components/Navbar';
 import HeroSection from './Components/HeroSection';
 import HolidayCategories from './Components/HolidayCategories';
 import Destinations from './Components/Destinations';
@@ -13,7 +12,6 @@ import Footer from './Components/Footer';
 export default function Homepage() {
   return (
     <div className="travique-root">
-      <Navbar />
       <main>
         <HeroSection />
         <HolidayCategories />

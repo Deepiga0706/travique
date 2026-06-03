@@ -9,7 +9,7 @@ export default function ProfileDropdown({user, onLogout}){
       <div className="profile-menu">
         <button onClick={()=>navigate('/profile')}>My Profile</button>
         <button onClick={()=>navigate('/bookings')}>My Bookings</button>
-        <button onClick={() => { localStorage.removeItem('travique_current_user'); window.dispatchEvent(new Event('travique-auth')); if(onLogout) onLogout(); navigate('/'); }}>Logout</button>
+        <button onClick={() => { localStorage.removeItem('travique_current_user'); if(onLogout) onLogout(); navigate('/'); }}>Logout</button>
       </div>
     </div>
   )
