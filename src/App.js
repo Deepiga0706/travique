@@ -33,7 +33,9 @@ function App() {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/honeymoon-packages" element={<CategoryPage slug="honeymoon-packages" title="Honeymoon Packages" />} />
         <Route path="/international-tours" element={<CategoryPage slug="international-tours" title="International Tours" />} />
+        <Route path="/group-tours" element={<CategoryPage slug="group-tours" title="Group Tours" />} />
         <Route path="/group" element={<CategoryPage slug="group-tours" title="Group Tours" />} />
+        <Route path="/india" element={<CategoryPage slug="india" title="All India Tours" />} />
         <Route path="/family-vacations" element={<CategoryPage slug="family-vacations" title="Family Vacations" />} />
         <Route path="/adventure-trips" element={<CategoryPage slug="adventure-trips" title="Adventure Trips" />} />
         <Route path="/beach-escapes" element={<CategoryPage slug="beach-escapes" title="Beach Escapes" />} />
