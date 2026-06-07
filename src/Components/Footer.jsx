@@ -8,6 +8,7 @@ export default function Footer() {
         <div>
           <h4>About Travique</h4>
           <p className="muted">Premium travel planning and bespoke itineraries for discerning travelers.</p>
+          <p style={{marginTop:8}}>Email: <a href="mailto:mailtravique@gmail.com">mailtravique@gmail.com</a></p>
         </div>
         <div>
           <h5>Destinations</h5>

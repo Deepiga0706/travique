@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-function getUsers(){
-  try{ return JSON.parse(localStorage.getItem('travique_users')||'[]') }catch(e){return[]}
-}
 
 export default function Signup({ onAuth }){
   const [form,setForm] = useState({name:'',email:'',phone:'',password:'',confirm:''});
@@ -19,25 +17,44 @@ export default function Signup({ onAuth }){
     if(!/^\d{6,15}$/.test(form.phone)) return 'Enter a valid phone number.';
     return '';
   }
+async function onSubmit(e){
+  e.preventDefault();
 
-  function onSubmit(e){
-    e.preventDefault();
-    const v = validate();
-    if(v){ setErr(v); return }
+  const v = validate();
 
-    const users = getUsers();
-    if(users.find(u=>u.email.toLowerCase()===form.email.toLowerCase())){
-      setErr('An account with this email already exists.');
-      return;
-    }
-
-    const user = {name: form.name, email: form.email.toLowerCase(), phone: form.phone, password: form.password};
-    users.push(user);
-    localStorage.setItem('travique_users', JSON.stringify(users));
-    localStorage.setItem('travique_current_user', JSON.stringify(user));
-    if(typeof onAuth === 'function') onAuth(user);
-    navigate('/');
+  if(v){
+    setErr(v);
+    return;
   }
+
+  try {
+
+    await axios.post(
+      "http://localhost:5000/api/user/signup",
+      {
+        firstname: form.name,
+        lastname: "",
+        email: form.email.toLowerCase(),
+        phone: form.phone,
+        password: form.password,
+        confirmpassword: form.confirm
+      }
+    );
+
+    navigate("/login");
+
+  } catch(error) {
+
+    setErr(
+      error.response?.data?.message ||
+      "Signup failed"
+    );
+
+  }
+}
+
+
+
 
   useEffect(()=>{ setErr('') }, [form])
 
@@ -72,4 +89,4 @@ export default function Signup({ onAuth }){
       </div>
     </div>
   )
-}
+};

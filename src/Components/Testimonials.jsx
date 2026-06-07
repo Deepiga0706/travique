@@ -1,20 +1,17 @@
 import React from 'react';
-import group_trip from '../Assests/Images/group_trip.jpg';
-import rithanya from '../Assests/Images/rithanya.jpeg';
-import Family_trip from '../Assests/Images/Family_trip.jpeg';
-import IV from '../Assests/Images/IV.jpg';
+
 const data = [
   {
     name: 'Friends Tour',
-    photo: group_trip,
+    photo: '/images/group_trip.jpg',
     rating: 5,
     location: 'Manali, India',
     tripType: 'Friends Trip',
-    text: ' Our friends trip to Manali with Travique was an absolute blast! The itinerary was perfectly balanced with thrilling activities and relaxing moments, allowing us to bond and create unforgettable memories together.'
+    text: 'Our friends trip to Manali with Travique was an absolute blast! The itinerary was perfectly balanced with thrilling activities and relaxing moments, allowing us to bond and create unforgettable memories together.'
   },
   {
     name: 'Rithanya',
-    photo: rithanya,
+    photo: '/images/rithanya.jpeg',
     rating: 5,
     location: 'Coimbatore, India',
     tripType: 'Adventurous Trip-Manali',
@@ -22,7 +19,7 @@ const data = [
   },
   {
     name: 'Subika',
-    photo: Family_trip,
+    photo: '/images/Family_trip.jpeg',
     rating: 5,
     location: 'Kashmir, India',
     tripType: 'Family Trip',
@@ -30,7 +27,7 @@ const data = [
   },
   {
     name: 'Industrial Visit',
-    photo: IV,
+    photo: '/images/IV.jpg',
     rating: 4,
     location: 'Kochin, India',
     tripType: 'Educational Trip',

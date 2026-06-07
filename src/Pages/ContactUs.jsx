@@ -10,7 +10,7 @@ export default function ContactUs() {
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginTop:24}}>
           <div>
             <h3>Contact Information</h3>
-            <p>Email: concierge@travique.com</p>
+            <p>Email: <a href="mailto:mailtravique@gmail.com">mailtravique@gmail.com</a></p>
             <p>Phone: +91 98765 43210</p>
             <p>Address: Mumbai, India</p>
           </div>

@@ -4,8 +4,7 @@ import ProfileDropdown from './ProfileDropdown';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Home' },
-  { to: '/honeymoon', label: 'Honeymoon Packages' },
-  { to: '/international', label: 'International Tours' },
+ 
   { to: '/india', label: 'All India Tours' },
   { to: '/educational', label: 'Educational Tours' },
   { to: '/group', label: 'Group Tours' },

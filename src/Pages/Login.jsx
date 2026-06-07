@@ -1,25 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-function getUsers(){
-  try{ return JSON.parse(localStorage.getItem('travique_users')||'[]') }catch(e){return[]}
-}
+
 
 export default function Login({ onAuth }){
   const [form,setForm] = useState({email:'',password:''});
   const [err,setErr] = useState('');
   const navigate = useNavigate();
 
-  function onSubmit(e){
-    e.preventDefault();
-    if(!form.email||!form.password){ setErr('Please fill both fields.'); return }
-    const users = getUsers();
-    const user = users.find(u=>u.email.toLowerCase()===form.email.toLowerCase() && u.password===form.password);
-    if(!user){ setErr('Invalid credentials.'); return }
-    localStorage.setItem('travique_current_user', JSON.stringify(user));
-    if(typeof onAuth === 'function') onAuth(user);
-    navigate('/');
+ async function onSubmit(e){
+  e.preventDefault();
+
+  if(!form.email || !form.password){
+    setErr("Please fill both fields.");
+    return;
   }
+
+  try{
+
+    const response = await axios.post(
+      "http://localhost:5000/api/user/login",
+      {
+        email: form.email,
+        password: form.password
+      }
+    );
+
+    localStorage.setItem(
+      "token",
+      response.data.token
+    );
+
+    localStorage.setItem(
+      "travique_current_user",
+      JSON.stringify(response.data.user)
+    );
+
+    if(typeof onAuth === "function"){
+      onAuth(response.data.user);
+    }
+
+    navigate("/");
+
+  }catch(error){
+
+    setErr(
+      error.response?.data?.message ||
+      "Login failed"
+    );
+
+  }
+}
 
   useEffect(()=>{ setErr('') }, [form])
 
