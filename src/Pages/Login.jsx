@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-
-
-
 export default function Login({ onAuth }){
   const [form,setForm] = useState({email:'',password:''});
   const [err,setErr] = useState('');
