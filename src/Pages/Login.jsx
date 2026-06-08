@@ -41,7 +41,11 @@ export default function Login({ onAuth }){
       onAuth(response.data.user);
     }
 
-    navigate("/");
+    if (response.data.user?.role === "admin") {
+  navigate("/admin");
+} else {
+  navigate("/");
+}
 
   }catch(error){
 

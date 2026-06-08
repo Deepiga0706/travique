@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const places = [
   { name: 'Maldives', img: 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MXxzZWFyY2h8NHx8dHJhdmVsfHwwfHx8fDE2MTkzMDU5NDI&ixlib=rb-1.2.1&q=80&w=1080?auto=format&fit=crop&w=800&q=80', price: 'Starting Rs. 45,000', rating: 4.9 },
@@ -10,6 +11,8 @@ const places = [
 ];
 
 export default function Destinations() {
+  const navigate = useNavigate();
+
   return (
     <section id="destinations" className="container destinations">
       <h2 className="section-title">Popular Destinations</h2>
@@ -23,7 +26,12 @@ export default function Destinations() {
                 <span className="rating">★ {p.rating}</span>
                 <span className="price">{p.price}</span>
               </div>
-              <button className="btn btn-outline">Explore</button>
+              <button 
+                className="btn btn-outline"
+                onClick={() => navigate(`/destination/${p.name.toLowerCase()}`)}
+              >
+                Explore
+              </button>
             </div>
           </div>
         ))}

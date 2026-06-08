@@ -13,6 +13,7 @@ import Bookings from './Pages/Bookings';
 import CategoryPage from './Pages/CategoryPage';
 import PackageDetails from './Pages/PackageDetails';
 import EducationalTrip from './Pages/EducationalTrip';
+import IndiaToursPage from './Pages/IndiaTourpage';
 import { WhatsAppWidget } from './Components/whatsapp';
 
 function App() {
@@ -35,7 +36,8 @@ function App() {
         <Route path="/international-tours" element={<CategoryPage slug="international-tours" title="International Tours" />} />
         <Route path="/group-tours" element={<CategoryPage slug="group-tours" title="Group Tours" />} />
         <Route path="/group" element={<CategoryPage slug="group-tours" title="Group Tours" />} />
-        <Route path="/india" element={<CategoryPage slug="india" title="All India Tours" />} />
+        <Route path="/india" element={<IndiaToursPage />} />
+        <Route path="/destination/:slug" element={<CategoryPage />} />
         <Route path="/family-vacations" element={<CategoryPage slug="family-vacations" title="Family Vacations" />} />
         <Route path="/adventure-trips" element={<CategoryPage slug="adventure-trips" title="Adventure Trips" />} />
         <Route path="/beach-escapes" element={<CategoryPage slug="beach-escapes" title="Beach Escapes" />} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { indiaGallery } from '../../data/indiaPackages';
+import { indiaGallery } from '../data/IndiaPackages';
 
 const IndiaGallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);

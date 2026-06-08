@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { indiaStats } from '../../data/indiaPackages';
+import { indiaStats } from '../data/IndiaPackages';
 
 const AnimatedCounter = ({ value, suffix, duration = 2000 }) => {
   const [count, setCount] = useState(0);

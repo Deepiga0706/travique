@@ -1,11 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-export default function CategoryPage({slug, title}){
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
+const CATEGORIES = [
+  'honeymoon-packages',
+  'group-tours',
+  'family-vacations',
+  'international-tours',
+  'adventure-trips',
+  'beach-escapes',
+  'luxury-retreats',
+  'group',
+  'honeymoon',
+  'family',
+  'international',
+  'adventure',
+  'beach',
+  'luxury'
+];
+
+export default function CategoryPage({ slug: propSlug, title: propTitle }) {
   const navigate = useNavigate();
+  const { slug: paramSlug } = useParams();
+
+  const slug = propSlug || paramSlug;
+  const isCategory = CATEGORIES.includes(slug);
+
+  const title = propTitle || (slug ? slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ') + ' Tours' : 'Tours');
+
   const [packages, setPackages] = useState([]);
-  const [requestedCategory, setRequestedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -25,32 +50,23 @@ export default function CategoryPage({slug, title}){
   };
 
   useEffect(() => {
+    if (!slug) return;
     setLoading(true);
     setError(null);
 
-    // Prefer backend filtering when slug is present; treat 'india' as special (fetch all)
-    const mapped = slug ? mapSlug(slug) : null;
-    const categoryParam = mapped === 'india' ? null : mapped;
-    setRequestedCategory(categoryParam === null ? null : categoryParam);
-    const url = categoryParam
-      ? `http://localhost:5000/api/packages?category=${encodeURIComponent(categoryParam)}`
-      : 'http://localhost:5000/api/packages';
+    let url = `${API_BASE}/api/packages`;
+    if (isCategory) {
+      const mapped = mapSlug(slug);
+      url = `${API_BASE}/api/packages?category=${encodeURIComponent(mapped)}`;
+    } else {
+      url = `${API_BASE}/api/packages?destination=${encodeURIComponent(slug)}`;
+    }
 
     console.log('Fetching packages from', url);
     axios
       .get(url)
       .then((res) => {
-        // If backend returned empty but we have a slug, fetch all and filter as fallback
-        console.log('Initial response count:', (res.data || []).length);
-        if ((res.data || []).length === 0 && slug) {
-          console.log('Empty response for category, fetching all packages as fallback');
-          return axios.get('http://localhost:5000/api/packages').then(r => r.data);
-        }
-        return res.data;
-      })
-      .then((data) => {
-        console.log('Final packages count:', (data || []).length);
-        setPackages(data || []);
+        setPackages(res.data || []);
         setLoading(false);
       })
       .catch((err) => {
@@ -59,25 +75,9 @@ export default function CategoryPage({slug, title}){
         setLoading(false);
       });
 
-  }, [slug]);
+  }, [slug, isCategory]);
 
-  // Decide items to render. If we requested a category from the server, trust server results.
   let items = packages;
-  if (slug) {
-    if (!requestedCategory) {
-      // No backend category requested (e.g., 'india') — perform client-side filter
-      items = packages.filter(p => {
-        if (!p) return false;
-        const category = p.category;
-        const wanted = mapSlug(slug);
-        if (Array.isArray(category)) return category.includes(wanted) || category.includes(slug) || category.includes(slug.replace(/-/, ''));
-        return category === wanted || category === slug;
-      });
-    } else {
-      // Server was asked for a specific category — trust its results
-      items = packages;
-    }
-  }
 
   return (
     <section className="container category-page" style={{padding:'60px 20px'}}>
