@@ -27,7 +27,7 @@ export default function Destinations() {
                 <span className="price">{p.price}</span>
               </div>
               <button 
-                className="btn btn-outline"
+                className="explore-btn"
                 onClick={() => navigate(`/destination/${p.name.toLowerCase()}`)}
               >
                 Explore

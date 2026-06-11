@@ -374,11 +374,86 @@
 
 .testi-card {
   background: #FFFFFF;
-  padding: 30px;
-  border-radius: 20px;
+  padding: 18px;
+  border-radius: 18px;
   box-shadow: 0 10px 25px rgba(0,59,54,0.06);
   border-top: 3px solid var(--gold);
+  height: 310px;
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease;
 }
+
+.india-testimonials-grid{
+  gap: 18px;
+}
+
+.india-testimonial-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 18px 45px rgba(0,59,54,0.14);
+}
+
+.india-testimonial-header{
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.india-quote{
+  font-size: 34px;
+  line-height: 1;
+  color: rgba(255,255,255,0.95);
+}
+
+.india-destination-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(245,196,0,0.14);
+  color: #fff;
+  border: 1px solid rgba(245,196,0,0.25);
+  font-weight: 900;
+  font-size: .82rem;
+  margin-bottom: 10px;
+}
+
+.india-testimonial-text{
+  font-size: .98rem;
+  font-weight: 600;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.customer-avatar{
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 3px solid rgba(245,196,0,0.9);
+  overflow: hidden;
+  box-shadow: 0 12px 25px rgba(0,59,54,0.18);
+  background: rgba(255,255,255,0.12);
+}
+.customer-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.india-cust-name{
+  font-size: 1rem;
+  font-weight: 900;
+  margin-top: 8px;
+}
+
+.india-cust-meta{
+  font-size: .88rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85) !important;
+}
+
 
 .testi-text {
   font-size: 0.95rem;
@@ -388,7 +463,13 @@
   margin-bottom: 20px;
 }
 
+/* Ensure our India testimonial cards remain on-brand */
+.testi-content{
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.62) 100%) !important;
+}
+
 .testi-user { display: flex; align-items: center; gap: 15px; }
+
 
 .user-avatar {
   width: 50px;
@@ -441,7 +522,141 @@
   line-height: 1.6;
 }
 
+/* India Tourism Gallery (modern card grid) */
+.india-gallery-section{
+  padding:70px 0;
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.gallery-item{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#fff;
+  border:1px solid var(--light-bg);
+  box-shadow:0 12px 30px rgba(0,59,54,0.08);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.gallery-item:hover{
+  transform:translateY(-6px);
+  box-shadow:0 22px 60px rgba(0,59,54,0.14);
+}
+
+.gallery-image{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  transition:transform .35s ease, filter .35s ease;
+  display:block;
+}
+
+.gallery-item:hover .gallery-image{
+  transform:scale(1.06);
+  filter:brightness(0.96);
+}
+
+.gallery-overlay{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:16px;
+  background:linear-gradient(to top, rgba(0,59,54,0.92), rgba(0,59,54,0.45), transparent);
+}
+
+.gallery-title{
+  margin:0;
+  color:#fff;
+  font-size:1.05rem;
+  font-weight:900;
+}
+
+.gallery-location{
+  margin:6px 0 0;
+  color:rgba(255,255,255,0.86);
+  font-weight:700;
+  font-size:0.9rem;
+}
+
+/* lightbox */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.78);
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.lightbox-content{
+  background:#fff;
+  border-radius:16px;
+  max-width:980px;
+  width:100%;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+}
+
+.lightbox-content img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.lightbox-info{
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+}
+
+.lightbox-info h3{
+  margin:0;
+  color:var(--primary);
+  font-weight:900;
+}
+
+.lightbox-info p{
+  margin:0;
+  color:var(--text-muted);
+  font-weight:600;
+}
+
+.lightbox-close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  border:1px solid rgba(245,196,0,0.25);
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:22px;
+}
+
+@media(max-width:1000px){
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:600px){
+  .gallery-grid{grid-template-columns:1fr;}
+  .gallery-image{height:220px;}
+  .lightbox-content{grid-template-columns:1fr;}
+}
+
 /* 9. FLOATING BUTTON */
+
 .floating-enquire-btn {
   position: fixed;
   bottom: 30px;
@@ -477,4 +692,206 @@
   padding: 3px 8px;
   border-radius: 4px;
   font-weight: 600;
+}
+
+/* ── PREMIUM INDIA TESTIMONIALS ─────────────────────────────── */
+.india-testi-section {
+  padding: 80px 0;
+  background: linear-gradient(160deg, #F8F9FA 0%, #ECEEEF 100%);
+}
+
+/* Header */
+.india-testi-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.india-testi-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 14px auto 18px;
+  max-width: 260px;
+}
+.india-testi-divider-line {
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #F5C400, transparent);
+}
+.india-testi-divider-icon {
+  color: #F5C400;
+  font-size: 14px;
+}
+
+/* Stats row */
+.india-testi-stats {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 48px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0,59,54,0.08);
+  border: 1px solid rgba(245,196,0,0.2);
+  overflow: hidden;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.india-testi-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 16px;
+  border-right: 1px solid #ECEEEF;
+  gap: 4px;
+}
+.india-testi-stat:last-child { border-right: none; }
+.india-testi-stat-icon { font-size: 1.5rem; }
+.india-testi-stat-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #003B36;
+  line-height: 1;
+}
+.india-testi-stat-label {
+  font-size: 0.78rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  text-align: center;
+}
+
+/* Desktop grid — 3 columns, hidden on mobile */
+.india-testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.india-testi-carousel { display: none; }
+
+/* Card */
+.india-testi-card {
+  position: relative;
+  background: #fff;
+  border-radius: 18px;
+  padding: 28px 26px 24px;
+  box-shadow: 0 8px 28px rgba(0,59,54,0.07);
+  border: 1px solid rgba(245,196,0,0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  overflow: hidden;
+}
+.india-testi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,59,54,0.13);
+}
+
+/* Background quote mark */
+.india-testi-quote {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-size: 4.5rem;
+  line-height: 1;
+  color: rgba(245,196,0,0.14);
+  font-family: Georgia, serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Stars */
+.india-testi-stars {
+  color: #F5C400;
+  font-size: 1.05rem;
+  letter-spacing: 2px;
+}
+
+/* Review */
+.india-testi-review {
+  color: #1F2937;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* Destination tag */
+.india-testi-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+/* Traveller row */
+.india-testi-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid #ECEEEF;
+}
+.india-testi-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #F5C400;
+  flex-shrink: 0;
+}
+.india-testi-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #003B36;
+}
+.india-testi-location {
+  font-size: 0.8rem;
+  color: #6B7280;
+}
+
+/* Mobile carousel dots */
+.india-testi-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+.india-testi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #ECEEEF;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.india-testi-dot.active {
+  background: #F5C400;
+  transform: scale(1.35);
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .india-testi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  /* Switch to carousel on mobile */
+  .india-testi-grid   { display: none; }
+  .india-testi-carousel { display: block; }
+
+  .india-testi-stats {
+    flex-direction: row;
+    max-width: 100%;
+  }
+  .india-testi-stat { padding: 16px 8px; }
+  .india-testi-stat-value { font-size: 1.15rem; }
 }

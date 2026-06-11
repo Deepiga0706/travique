@@ -50,25 +50,31 @@ export default function Testimonials() {
     <section className="testimonials-section" aria-labelledby="testimonials-title">
       <div className="container">
         <h2 id="testimonials-title" className="section-title">Customer Testimonials</h2>
-        <div className="testi-grid">
+        <div className="testi-grid india-testimonials-grid">
           {data.map((p, idx) => (
-            <article className="testi-card" key={idx}>
+            <article className="testi-card india-testimonial-card" key={idx}>
               <div className="testi-media" style={{ backgroundImage: `url(${p.photo})` }} />
 
               <div className="testi-content testimonial-content">
-                <header className="testi-header">
-                  <div className="quote">❝</div>
+                <header className="testi-header india-testimonial-header">
+                  <div className="quote india-quote" aria-hidden>
+                    ❝
+                  </div>
                   <Stars count={p.rating} />
                 </header>
 
                 <div className="review-text">
-                  <p className="testi-text">{p.text}</p>
+                  <div className="india-destination-badge">{p.location}</div>
+                  <p className="testi-text india-testimonial-text">{p.text}</p>
                 </div>
 
                 <div className="testi-footer reviewer-info">
                   <div className="customer">
-                    <div className="cust-name">{p.name}</div>
-                    <div className="cust-meta">{p.location} • {p.tripType}</div>
+                    <div className="customer-avatar">
+                      <img src={p.photo} alt={p.name} />
+                    </div>
+                    <div className="cust-name india-cust-name">{p.name}</div>
+                    <div className="cust-meta india-cust-meta">{p.tripType}</div>
                   </div>
                 </div>
               </div>
@@ -79,3 +85,4 @@ export default function Testimonials() {
     </section>
   );
 }
+

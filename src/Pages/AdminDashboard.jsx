@@ -271,10 +271,16 @@ export default function AdminDashboard() {
             <div className="tab-content">
               <h2 className="section-title">Admin Profile</h2>
               <div className="profile-card">
-                <div className="profile-avatar-lg">{user.email?.[0]?.toUpperCase()}</div>
+                <div className="profile-avatar-lg">
+                  {(user.firstname || user.name || user.email || '?')[0].toUpperCase()}
+                </div>
                 <div className="profile-info">
+                  {(user.firstname || user.name) && (
+                    <div className="profile-row"><span>Name</span><strong>{user.firstname ? `${user.firstname} ${user.lastname || ''}`.trim() : user.name}</strong></div>
+                  )}
                   <div className="profile-row"><span>Email</span><strong>{user.email}</strong></div>
                   <div className="profile-row"><span>Role</span><span className="role-badge">Admin</span></div>
+                  <div className="profile-row"><span>Member Since</span><strong>{user.createdAt ? new Date(user.createdAt).getFullYear() : '—'}</strong></div>
                   <div className="profile-row"><span>Packages</span><strong>{stats.totalPackages}</strong></div>
                   <div className="profile-row"><span>Total Bookings</span><strong>{stats.totalBookings}</strong></div>
                 </div>
@@ -292,10 +298,8 @@ function StatCard({ icon, label, value, color }) {
   return (
     <div className={`stat-card stat-${color}`}>
       <span className="stat-icon">{icon}</span>
-      <div className="stat-body">
-        <div className="stat-value">{value}</div>
-        <div className="stat-label">{label}</div>
-      </div>
+      <div className="stat-value">{value}</div>
+      <div className="stat-label">{label}</div>
     </div>
   );
 }

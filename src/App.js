@@ -12,10 +12,19 @@ import Profile from './Pages/Profile';
 import Bookings from './Pages/Bookings';
 import CategoryPage from './Pages/CategoryPage';
 import PackageDetails from './Pages/PackageDetails';
+import BookNow from './Pages/BookingNow';
 import EducationalTrip from './Pages/EducationalTrip';
 import IndiaToursPage from './Pages/IndiaTourpage';
+import CustomizeTrip from './Pages/CustomizeTrip';
+import CustomTripDetails from './Pages/CustomTripDetails';
+
+
+
 import { WhatsAppWidget } from './Components/whatsapp';
 import AdminDashboard from './Pages/AdminDashboard';
+import PrivacyPolicy from './Pages/PrivacyPolicy';
+import TermsConditions from './Pages/TermsConditions';
+
 
 // ── Role-based Route Guard ────────────────────────────────────────
 function ProtectedRoute({ children, requiredRole }) {
@@ -57,7 +66,14 @@ function App() {
         <Route path="/beach-escapes" element={<CategoryPage slug="beach-escapes" title="Beach Escapes" />} />
         <Route path="/luxury-retreats" element={<CategoryPage slug="luxury-retreats" title="Luxury Retreats" />} />
         <Route path="/package/:slug" element={<PackageDetails />} />
+        <Route path="/book-now" element={<BookNow />} />
         <Route path="/educational" element={<EducationalTrip />} />
+        <Route path="/customize-trip" element={<CustomizeTrip />} />
+        <Route path="/custom-trip/:id" element={<CustomTripDetails />} />
+
+
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsConditions />} />
         <Route
           path="/admin"
           element={
@@ -66,6 +82,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
       </Routes>
     </BrowserRouter>
   );

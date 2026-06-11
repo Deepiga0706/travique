@@ -1,7 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../Components/Footer';
 
+function HoverBtn({ className, onClick, children }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      className={className}
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ cursor: 'pointer', transform: hovered ? 'translateY(-3px)' : 'translateY(0)', transition: 'transform 0.2s ease, box-shadow 0.2s ease', boxShadow: hovered ? '0 8px 24px rgba(0,59,54,0.18)' : undefined }}
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function AboutUs() {
+  const navigate = useNavigate();
+
+  function scrollToServices() {
+    const el = document.getElementById('about-services');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   return (
     <div className="page about-page">
       <header className="about-hero">
@@ -11,18 +34,22 @@ export default function AboutUs() {
               <h1>About Travique</h1>
               <p className="section-subtitle">We craft luxury travel experiences tailored to discerning explorers — thoughtful itineraries, white-glove service and local partnerships.</p>
               <div className="hero-ctas">
-                <button className="btn btn-primary">Explore Our Services</button>
-                <button className="btn btn-outline">Contact Concierge</button>
+                <HoverBtn className="btn btn-primary" onClick={scrollToServices}>
+                  Explore Our Services
+                </HoverBtn>
+                <HoverBtn className="btn btn-outline" onClick={() => navigate('/contact')}>
+                  Contact Concierge
+                </HoverBtn>
               </div>
             </div>
 
-            <div className="hero-media" aria-hidden style={{backgroundImage: 'url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80)'}} />
+            <div className="hero-media" aria-hidden style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80)' }} />
           </div>
         </div>
       </header>
 
       <main className="container about-main">
-        <section className="about-grid">
+        <section id="about-services" className="about-grid">
           <div className="about-mission">
             <h2 className="section-title">Who we are</h2>
             <p>Travique is a boutique travel atelier specialising in bespoke journeys. We blend expert planning with local insight to create memorable, stress-free experiences.</p>
@@ -68,8 +95,10 @@ export default function AboutUs() {
         <section className="about-cta">
           <h3>Ready to plan your next journey?</h3>
           <p className="muted">Contact our concierge for a complimentary consultation.</p>
-          <div style={{marginTop:16}}>
-            <button className="btn btn-primary">Book Consultation</button>
+          <div style={{ marginTop: 16 }}>
+            <HoverBtn className="btn btn-primary" onClick={() => navigate('/customize-trip')}>
+              Book Consultation
+            </HoverBtn>
           </div>
         </section>
       </main>

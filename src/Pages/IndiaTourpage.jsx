@@ -4,8 +4,6 @@ import axios from 'axios';
 
 import { 
   indiaCategories, 
-  indiaTestimonials, 
- 
   budgetRanges, 
   durationOptions 
 } from '../data/IndiaPackages';
@@ -208,7 +206,8 @@ const IndiaPackagesGrid = ({ packages }) => {
                       </button>
                       <button
                         className="btn btn-primary"
-                        onClick={() => alert("Booking flow placeholder")}
+                        onClick={() => navigate("/book-now", { state: { pkg } })}
+                        type="button"
                       >
                         Book Now
                       </button>
@@ -256,30 +255,129 @@ const WhyChooseTravique = () => {
   );
 };
 
+// Destination tag colours
+const TAG_COLORS = {
+  'Kerala Backwaters': { bg: 'rgba(11,122,117,0.10)', color: '#005F5B' },
+  'Royal Rajasthan':  { bg: 'rgba(245,196,0,0.12)',  color: '#8B6F00' },
+  'Golden Triangle Tour': { bg: 'rgba(0,59,54,0.09)', color: '#003B36' },
+  'Kashmir Paradise': { bg: 'rgba(28,110,164,0.10)', color: '#1C6EA4' },
+  'Andaman Honeymoon':{ bg: 'rgba(62,143,193,0.10)', color: '#2a7aaa' },
+};
+
+// Enriched testimonials with full review text
+const ENRICHED = [
+  { id:1, name:'Priya Sharma',   location:'Mumbai',    image:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150', rating:5, review:'The Kerala package was perfectly organised. Every houseboat stay, every transfer, and every meal exceeded our expectations. Travique turned our dream trip into reality.', pkg:'Kerala Backwaters' },
+  { id:2, name:'Rajesh Kumar',   location:'Delhi',     image:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150', rating:5, review:'A memorable Rajasthan journey with excellent hospitality and seamless planning from start to finish. The desert safari and heritage hotel stays were absolutely world-class.', pkg:'Royal Rajasthan' },
+  { id:3, name:'Anita Desai',    location:'Bangalore', image:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150', rating:5, review:'The Golden Triangle experience was luxurious, comfortable, and completely stress-free. Our guide was brilliant and the Taj Mahal at sunrise left us speechless.', pkg:'Golden Triangle Tour' },
+  { id:4, name:'Vikram Singh',   location:'Chandigarh',image:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150', rating:5, review:'Kashmir truly is paradise on Earth. The houseboat on Dal Lake was romantic beyond words. Travique handled every detail — we just had to enjoy every moment.', pkg:'Kashmir Paradise' },
+  { id:5, name:'Meera Nair',     location:'Chennai',   image:'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150', rating:5, review:'Our Andaman anniversary trip was flawless. Crystal-clear waters, amazing snorkelling, and a resort that felt truly premium. Will absolutely book with Travique again!', pkg:'Andaman Honeymoon' },
+];
+
+const STATS = [
+  { icon:'😊', value:'5,000+', label:'Happy Travelers' },
+  { icon:'⭐', value:'4.9/5',  label:'Average Rating'  },
+  { icon:'🗺️', value:'120+',  label:'Destinations Covered' },
+];
+
 // 6. India Testimonials Component
 const IndiaTestimonials = () => {
+  const [active, setActive] = React.useState(0);
+  const total = ENRICHED.length;
+
+  // Auto-slide on mobile
+  React.useEffect(() => {
+    const t = setInterval(() => setActive(i => (i + 1) % total), 4500);
+    return () => clearInterval(t);
+  }, [total]);
+
   return (
-    <section className="testimonials-section">
+    <section className="india-testi-section">
       <div className="container">
-        <div className="section-header">
+        {/* Header */}
+        <div className="india-testi-header">
           <span className="section-subtitle">TESTIMONIALS</span>
           <h2 className="section-title">What Our Travelers Say</h2>
-          <p className="section-description">Real reviews from travelers who booked their Indian holidays with us.</p>
+          <div className="india-testi-divider">
+            <span className="india-testi-divider-line" />
+            <span className="india-testi-divider-icon">✦</span>
+            <span className="india-testi-divider-line" />
+          </div>
+          <p className="section-description">Real reviews from travellers who booked their Indian holidays with Travique.</p>
         </div>
 
-        <div className="testi-grid">
-          {indiaTestimonials.slice(0, 3).map((t) => (
-            <div className="testi-card" key={t.id}>
-              <p className="testi-text">"{t.review}"</p>
-              <div className="testi-user">
-                <img src={t.image} alt={t.name} className="user-avatar" />
-                <div className="user-info">
-                  <h4>{t.name}</h4>
-                  <span>{t.location} • {t.package}</span>
-                </div>
-              </div>
+        {/* Stats row */}
+        <div className="india-testi-stats">
+          {STATS.map((s, i) => (
+            <div className="india-testi-stat" key={i}>
+              <span className="india-testi-stat-icon">{s.icon}</span>
+              <span className="india-testi-stat-value">{s.value}</span>
+              <span className="india-testi-stat-label">{s.label}</span>
             </div>
           ))}
+        </div>
+
+        {/* Desktop grid */}
+        <div className="india-testi-grid">
+          {ENRICHED.map((t) => {
+            const tag = TAG_COLORS[t.pkg] || { bg:'rgba(0,59,54,0.08)', color:'#003B36' };
+            return (
+              <div className="india-testi-card" key={t.id}>
+                <span className="india-testi-quote">❝</span>
+                {/* Stars */}
+                <div className="india-testi-stars">
+                  {'★'.repeat(t.rating)}
+                </div>
+                {/* Review text */}
+                <p className="india-testi-review">{t.review}</p>
+                {/* Destination tag */}
+                <span className="india-testi-tag" style={{ background: tag.bg, color: tag.color }}>
+                  📍 {t.pkg}
+                </span>
+                {/* Traveller */}
+                <div className="india-testi-user">
+                  <img src={t.image} alt={t.name} className="india-testi-avatar" />
+                  <div>
+                    <div className="india-testi-name">{t.name}</div>
+                    <div className="india-testi-location">{t.location}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Mobile carousel */}
+        <div className="india-testi-carousel">
+          {(() => {
+            const t = ENRICHED[active];
+            const tag = TAG_COLORS[t.pkg] || { bg:'rgba(0,59,54,0.08)', color:'#003B36' };
+            return (
+              <div className="india-testi-card">
+                <span className="india-testi-quote">❝</span>
+                <div className="india-testi-stars">{'★'.repeat(t.rating)}</div>
+                <p className="india-testi-review">{t.review}</p>
+                <span className="india-testi-tag" style={{ background: tag.bg, color: tag.color }}>📍 {t.pkg}</span>
+                <div className="india-testi-user">
+                  <img src={t.image} alt={t.name} className="india-testi-avatar" />
+                  <div>
+                    <div className="india-testi-name">{t.name}</div>
+                    <div className="india-testi-location">{t.location}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+          {/* Dots */}
+          <div className="india-testi-dots">
+            {ENRICHED.map((_, i) => (
+              <button
+                key={i}
+                className={`india-testi-dot${i === active ? ' active' : ''}`}
+                onClick={() => setActive(i)}
+                aria-label={`Go to testimonial ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

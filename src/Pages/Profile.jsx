@@ -148,9 +148,12 @@ export default function Profile() {
               </div>
 
               <div className="profile-title">
-                <h2>{form.name || user.name}</h2>
+                <h2>{form.name || user.firstname ? `${user.firstname || ''} ${user.lastname || ''}`.trim() : user.name || user.email?.split('@')[0]}</h2>
                 <p>{user.email}</p>
-                <p style={{ marginTop: 6 }}>{user.phone}</p>
+                {user.phone && <p style={{ marginTop: 2 }}>{user.phone}</p>}
+                <p style={{ marginTop: 4, fontSize: 11, color: 'var(--profile-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
+                  Member since {user.createdAt ? new Date(user.createdAt).getFullYear() : 'Travique'}
+                </p>
               </div>
             </div>
 

@@ -1,9 +1,8 @@
 # TODO
 
-- [x] Understand current ContactUs page markup and identify which CSS classes are missing.
-- [x] Add a dedicated ContactUs CSS so text/buttons are visible and page matches site theme.
-- [x] Update `src/Pages/ContactUs.jsx` to import the CSS and use consistent classNames.
-- [x] Ensure link/input/textarea colors inherit correctly (avoid white-on-white).
-- [ ] Run build/dev server and verify Contact page renders correctly (no white text / no white background issues).
-
+- [ ] Replace "Special Luxury Offers" section in home page (Offers component) with "Customize Your Dream Vacation" CTA.
+- [ ] Create new page component for route `/customize-trip` with premium hero + responsive form (all required fields) and success message.
+- [ ] Add React Router route for `/customize-trip` in `src/App.js`.
+- [ ] Add dedicated CSS for the new CTA + Customize Trip page, reusing existing Travique green/gold/luxury styles.
+- [ ] Run app/build checks to ensure no import/route errors.
 

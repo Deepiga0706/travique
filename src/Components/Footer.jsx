@@ -47,8 +47,9 @@ export default function Footer() {
           <ul>
             <li style={{ padding: '4px 0' }}><Link to="/about">About Us</Link></li>
             <li style={{ padding: '4px 0' }}><Link to="/faq">FAQ</Link></li>
+            <li style={{ padding: '4px 0' }}><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li style={{ padding: '4px 0' }}><Link to="/terms-and-conditions">Terms &amp; Conditions</Link></li>
             <li style={{ padding: '4px 0' }}><Link to="/contact">Contact Us</Link></li>
-            <li style={{ padding: '4px 0' }}><Link to="/">Home</Link></li>
           </ul>
         </div>
       </div>

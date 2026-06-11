@@ -1,0 +1,7 @@
+.booking-card-media{flex:0 0 180px;}
+
+@media (max-width:600px){
+  .booking-card-row{flex-direction:column!important;}
+  .booking-card-media{flex:0 0 auto;}
+}
+

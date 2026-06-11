@@ -141,7 +141,7 @@ export default function CategoryPage({ slug: propSlug, title: propTitle }) {
 
         <div style={{display:'flex',gap:8}}>
           <button
-            className="btn btn-outline"
+            className="explore-btn"
             onClick={() => navigate(`/package/${p.slug || p.id}`)}
           >
             Explore
@@ -149,7 +149,8 @@ export default function CategoryPage({ slug: propSlug, title: propTitle }) {
 
           <button
             className="btn btn-primary"
-            onClick={() => alert("Booking flow placeholder")}
+            onClick={() => navigate("/book-now", { state: { pkg: p } })}
+            type="button"
           >
             Book Now
           </button>

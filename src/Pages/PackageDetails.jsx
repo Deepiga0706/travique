@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Footer from "../Components/Footer";
+
 
 function ItineraryItem({ it }) {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,9 @@ function ItineraryItem({ it }) {
 
 export default function PackageDetails() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [pkg, setPkg] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [related, setRelated] = useState([]);
   const [gallery, setGallery] = useState([]);
@@ -148,7 +151,16 @@ export default function PackageDetails() {
             <div style={{ fontSize: 24, fontWeight: 800, margin: "12px 0", color: 'var(--primary)' }}>
               ₹{pkg.price?.toLocaleString()}
             </div>
-            <button className="btn btn-primary" style={{ width: '100%' }}>Book Now</button>
+            <button
+              className="btn btn-primary"
+              style={{ width: '100%' }}
+              onClick={() => navigate("/book-now", { state: { pkg } })}
+              type="button"
+            >
+              Book Now
+            </button>
+
+
           </aside>
         </div>
       </div>

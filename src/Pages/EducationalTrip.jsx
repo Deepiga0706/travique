@@ -59,7 +59,7 @@ export default function EducationalTrip(){
               <p className="muted" style={{marginTop:10}}>{t.description}</p>
               <div style={{marginTop:12,display:'flex',gap:8}}>
                 <button className="btn btn-outline" onClick={()=>navigate(`/package/${t.slug}`)}>View Details</button>
-                <button className="btn btn-primary" onClick={()=>alert('Booking flow placeholder')}>Book Now</button>
+                <button className="btn btn-primary" onClick={()=>navigate("/book-now", { state: { pkg: t } })} type="button">Book Now</button>
               </div>
             </div>
           </article>
