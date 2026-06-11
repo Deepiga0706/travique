@@ -33,52 +33,41 @@ export default function Profile() {
     return () => clearTimeout(t);
   }, [toast]);
 
-  // Local profile state (edit mode)
   const [editMode, setEditMode] = useState(false);
+
   const [form, setForm] = useState(() => ({
-    name: user?.name || '',
+    name: user?.name || `${user?.firstname || ''} ${user?.lastname || ''}`.trim(),
     email: user?.email || '',
     phone: user?.phone || '',
   }));
 
   useEffect(() => {
     setForm({
-      name: user?.name || '',
+      name: user?.name || `${user?.firstname || ''} ${user?.lastname || ''}`.trim(),
       email: user?.email || '',
       phone: user?.phone || '',
     });
   }, [user]);
 
-  // Profile picture (avatar)
   const [avatarUrl, setAvatarUrl] = useState(() => user?.avatarUrl || '');
   useEffect(() => {
     setAvatarUrl(user?.avatarUrl || '');
   }, [user]);
 
-  // Preferences
   const [prefs, setPrefs] = useState(() => ({
     emailUpdates: user?.preferences?.emailUpdates ?? true,
     whatsappUpdates: user?.preferences?.whatsappUpdates ?? false,
   }));
 
-  // Bookings
-  const bookings = useMemo(() => {
-    // Expected key(s) if backend wiring exists later.
-    return (
-      safeParse('travique_my_bookings') ||
-      safeParse('travique_bookings') ||
-      []
-    );
-  }, []);
+  const bookings = useMemo(() => (
+    safeParse('travique_my_bookings') || safeParse('travique_bookings') || []
+  ), []);
 
   const myTrips = useMemo(() => {
     if (!bookings?.length) return [];
     const email = user?.email;
     if (!email) return bookings;
-    // Allow both schemas: booking.userEmail or booking.customerEmail
-    return bookings.filter(
-      (b) => b?.userEmail === email || b?.customerEmail === email
-    );
+    return bookings.filter((b) => b?.userEmail === email || b?.customerEmail === email);
   }, [bookings, user?.email]);
 
   const kpis = useMemo(() => {
@@ -89,14 +78,31 @@ export default function Profile() {
   }, [myTrips]);
 
   const avatarInitial = useMemo(() => {
-    const n = (form.name || user?.name || '').trim();
-    if (!n) return '?';
-    return n[0].toUpperCase();
-  }, [form.name, user?.name]);
+    const n = (
+      form.name ||
+      user?.firstname ||
+      user?.name ||
+      user?.email?.split('@')[0] ||
+      ''
+    ).trim();
+    return n ? n[0].toUpperCase() : '?';
+  }, [form.name, user]);
+
+  const displayName = useMemo(() => {
+    if (form.name) return form.name;
+    if (user?.firstname) return `${user.firstname} ${user.lastname || ''}`.trim();
+    if (user?.name) return user.name;
+    return user?.email?.split('@')[0] || '';
+  }, [form.name, user]);
+
+  const memberSince = useMemo(() => {
+    if (user?.createdAt) return new Date(user.createdAt).getFullYear();
+    return 'Travique';
+  }, [user]);
 
   function validateProfile(next) {
     if (!next.name?.trim()) return 'Name is required.';
-    if (!next.email?.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(next.email)) return 'Enter a valid email.';
+    if (!next.email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(next.email)) return 'Enter a valid email.';
     if (!next.phone?.trim() || !/^\d{6,15}$/.test(next.phone.replace(/\s/g, ''))) return 'Enter a valid phone number (6-15 digits).';
     return '';
   }
@@ -114,13 +120,8 @@ export default function Profile() {
         whatsappUpdates: prefs.whatsappUpdates,
       },
     };
-
     const err = validateProfile(next);
-    if (err) {
-      setToast({ type: 'error', msg: err });
-      return;
-    }
-
+    if (err) { setToast({ type: 'error', msg: err }); return; }
     localStorage.setItem('travique_current_user', JSON.stringify(next));
     setEditMode(false);
     setToast({ type: 'success', msg: 'Profile updated successfully.' });
@@ -146,33 +147,32 @@ export default function Profile() {
               <div className="profile-avatar" aria-label="Profile avatar">
                 {avatarUrl ? <img src={avatarUrl} alt="Avatar" /> : avatarInitial}
               </div>
-
               <div className="profile-title">
-                <h2>{form.name || user.firstname ? `${user.firstname || ''} ${user.lastname || ''}`.trim() : user.name || user.email?.split('@')[0]}</h2>
+                <h2>{displayName}</h2>
                 <p>{user.email}</p>
                 {user.phone && <p style={{ marginTop: 2 }}>{user.phone}</p>}
                 <p style={{ marginTop: 4, fontSize: 11, color: 'var(--profile-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
-                  Member since {user.createdAt ? new Date(user.createdAt).getFullYear() : 'Travique'}
+                  Member since {memberSince}
                 </p>
               </div>
             </div>
 
             <div className="kpi-grid">
               <div className="kpi">
-                <div className="kpi-label">Trips</div>
-                <div className="kpi-value">{kpis.total}</div>
+                <span className="kpi-label">Trips</span>
+                <span className="kpi-value">{kpis.total}</span>
               </div>
               <div className="kpi">
-                <div className="kpi-label">Confirmed</div>
-                <div className="kpi-value">{kpis.confirmed}</div>
+                <span className="kpi-label">Confirmed</span>
+                <span className="kpi-value">{kpis.confirmed}</span>
               </div>
               <div className="kpi">
-                <div className="kpi-label">Pending</div>
-                <div className="kpi-value">{kpis.pending}</div>
+                <span className="kpi-label">Pending</span>
+                <span className="kpi-value">{kpis.pending}</span>
               </div>
               <div className="kpi">
-                <div className="kpi-label">Member since</div>
-                <div className="kpi-value">{user.createdAt ? new Date(user.createdAt).getFullYear() : '—'}</div>
+                <span className="kpi-label">Member since</span>
+                <span className="kpi-value">{memberSince}</span>
               </div>
             </div>
 
@@ -227,13 +227,8 @@ export default function Profile() {
                 <span className="label">Account</span>
                 <div className="small-subtitle">Edit your details and preferences.</div>
               </div>
-
               <div className="actions" style={{ marginTop: 0 }}>
-                <button
-                  type="button"
-                  className="btn-gold"
-                  onClick={() => setEditMode((v) => !v)}
-                >
+                <button type="button" className="btn-gold" onClick={() => setEditMode((v) => !v)}>
                   {editMode ? 'Close' : 'Edit profile'}
                 </button>
               </div>
@@ -247,7 +242,6 @@ export default function Profile() {
               <div className="small-subtitle" style={{ marginBottom: 10 }}>
                 Upload a photo (stored in localStorage for now) or keep the initial avatar.
               </div>
-
               <input
                 className="input"
                 type="file"
@@ -259,18 +253,15 @@ export default function Profile() {
                     setToast({ type: 'error', msg: 'Please select an image under 2MB.' });
                     return;
                   }
-
                   const reader = new FileReader();
                   reader.onload = () => {
-                    const url = String(reader.result || '');
-                    setAvatarUrl(url);
+                    setAvatarUrl(String(reader.result || ''));
                     setToast({ type: 'success', msg: 'Avatar ready. Save profile to apply.' });
                   };
                   reader.readAsDataURL(file);
                 }}
                 disabled={!editMode}
               />
-
               {avatarUrl && (
                 <div style={{ marginTop: 10 }}>
                   <div className="small-subtitle" style={{ marginBottom: 10 }}>Preview</div>
@@ -278,12 +269,7 @@ export default function Profile() {
                     <div className="profile-avatar" style={{ width: 56, height: 56 }}>
                       <img src={avatarUrl} alt="Avatar preview" />
                     </div>
-                    <button
-                      className="btn-outline"
-                      type="button"
-                      disabled={!editMode}
-                      onClick={() => setAvatarUrl('')}
-                    >
+                    <button className="btn-outline" type="button" disabled={!editMode} onClick={() => setAvatarUrl('')}>
                       Remove
                     </button>
                   </div>
@@ -296,56 +282,30 @@ export default function Profile() {
               <div className="row">
                 <div>
                   <label className="label">Full name</label>
-                  <input
-                    className="input"
-                    value={form.name}
-                    onChange={(e) => setForm((s) => ({ ...s, name: e.target.value }))}
-                    disabled={!editMode}
-                  />
+                  <input className="input" value={form.name} onChange={(e) => setForm((s) => ({ ...s, name: e.target.value }))} disabled={!editMode} />
                 </div>
                 <div>
                   <label className="label">Email</label>
-                  <input
-                    className="input"
-                    value={form.email}
-                    onChange={(e) => setForm((s) => ({ ...s, email: e.target.value }))}
-                    disabled={!editMode}
-                  />
+                  <input className="input" value={form.email} onChange={(e) => setForm((s) => ({ ...s, email: e.target.value }))} disabled={!editMode} />
                 </div>
               </div>
 
               <div className="row" style={{ marginTop: 12 }}>
                 <div>
                   <label className="label">Phone</label>
-                  <input
-                    className="input"
-                    value={form.phone}
-                    onChange={(e) => setForm((s) => ({ ...s, phone: e.target.value }))}
-                    disabled={!editMode}
-                    placeholder="e.g. 9876543210"
-                  />
+                  <input className="input" value={form.phone} onChange={(e) => setForm((s) => ({ ...s, phone: e.target.value }))} disabled={!editMode} placeholder="e.g. 9876543210" />
                 </div>
                 <div>
                   <label className="label">Notifications</label>
                   <div className="checkbox">
-                    <input
-                      type="checkbox"
-                      checked={prefs.emailUpdates}
-                      disabled={!editMode}
-                      onChange={(e) => setPrefs((p) => ({ ...p, emailUpdates: e.target.checked }))}
-                    />
+                    <input type="checkbox" checked={prefs.emailUpdates} disabled={!editMode} onChange={(e) => setPrefs((p) => ({ ...p, emailUpdates: e.target.checked }))} />
                     <div>
                       <div style={{ fontWeight: 800, color: 'var(--profile-emerald)' }}>Email updates</div>
-                      <div className="hint">Offers & trip reminders</div>
+                      <div className="hint">Offers &amp; trip reminders</div>
                     </div>
                   </div>
                   <div className="checkbox">
-                    <input
-                      type="checkbox"
-                      checked={prefs.whatsappUpdates}
-                      disabled={!editMode}
-                      onChange={(e) => setPrefs((p) => ({ ...p, whatsappUpdates: e.target.checked }))}
-                    />
+                    <input type="checkbox" checked={prefs.whatsappUpdates} disabled={!editMode} onChange={(e) => setPrefs((p) => ({ ...p, whatsappUpdates: e.target.checked }))} />
                     <div>
                       <div style={{ fontWeight: 800, color: 'var(--profile-emerald)' }}>WhatsApp updates</div>
                       <div className="hint">Only for important messages</div>
@@ -378,12 +338,7 @@ export default function Profile() {
                   <input className="input" type="password" disabled={!editMode} placeholder="Repeat new password" />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                  <button
-                    className="btn-outline"
-                    type="button"
-                    disabled={!editMode}
-                    onClick={() => setToast({ type: 'success', msg: 'Password change is a placeholder in this UI.' })}
-                  >
+                  <button className="btn-outline" type="button" disabled={!editMode} onClick={() => setToast({ type: 'success', msg: 'Password change is a placeholder in this UI.' })}>
                     Change password
                   </button>
                 </div>
@@ -393,30 +348,19 @@ export default function Profile() {
                 <button className="btn-outline" type="button" disabled={!editMode} onClick={() => {
                   setForm({ name: user.name || '', email: user.email || '', phone: user.phone || '' });
                   setAvatarUrl(user.avatarUrl || '');
-                  setPrefs({
-                    emailUpdates: user?.preferences?.emailUpdates ?? true,
-                    whatsappUpdates: user?.preferences?.whatsappUpdates ?? false,
-                  });
+                  setPrefs({ emailUpdates: user?.preferences?.emailUpdates ?? true, whatsappUpdates: user?.preferences?.whatsappUpdates ?? false });
                   setEditMode(false);
                   setToast({ type: 'success', msg: 'Changes discarded.' });
                 }}>
                   Cancel
                 </button>
-
-                <button className="btn-gold" type="submit" disabled={!editMode}>
-                  Save changes
-                </button>
-
-                <button
-                  className="btn-outline"
-                  type="button"
-                  onClick={() => {
-                    localStorage.removeItem('travique_current_user');
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = '/';
-                  }}
-                >
+                <button className="btn-gold" type="submit" disabled={!editMode}>Save changes</button>
+                <button className="btn-outline" type="button" onClick={() => {
+                  localStorage.removeItem('travique_current_user');
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('user');
+                  window.location.href = '/';
+                }}>
                   Logout
                 </button>
               </div>
@@ -427,4 +371,3 @@ export default function Profile() {
     </div>
   );
 }
-

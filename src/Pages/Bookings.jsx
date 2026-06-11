@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Footer from '../Components/Footer';
 import { Link } from 'react-router-dom';
-import StatusBadge from '../Components/StatusBadge';
+
 import { getMyBookingsCombined } from '../services/customTrips';
 
 function safeArray(v) {
@@ -10,30 +10,152 @@ function safeArray(v) {
 
 function formatINR(amount) {
   const n = Number(amount || 0);
-  try {
-    return `₹${n.toLocaleString('en-IN')}`;
-  } catch {
-    return `₹${n}`;
-  }
+  try { return `₹${n.toLocaleString('en-IN')}`; }
+  catch { return `₹${n}`; }
 }
 
-function Badge({ children }) {
+function shortId(id) {
+  if (!id) return '—';
+  const s = String(id);
+  return s.length > 8 ? s.slice(0, 8) + '...' : s;
+}
+
+function StatusChip({ status }) {
+  const s = (status || '').toLowerCase();
+  let bg, color, label;
+  if (s === 'confirmed' || s === 'accepted') {
+    bg = 'rgba(22,163,74,0.10)'; color = '#15803d'; label = '✅ Confirmed';
+  } else if (s.includes('cancel') || s === 'rejected') {
+    bg = 'rgba(220,38,38,0.10)'; color = '#dc2626'; label = '❌ ' + (s === 'rejected' ? 'Rejected' : 'Cancelled');
+  } else {
+    bg = 'rgba(234,88,12,0.10)'; color = '#ea580c'; label = '⏳ ' + (status || 'Pending Review');
+  }
   return (
-    <span
+    <span style={{ display:'inline-flex', alignItems:'center', padding:'5px 12px', borderRadius:999, background:bg, color, fontWeight:700, fontSize:'0.78rem', whiteSpace:'nowrap' }}>
+      {label}
+    </span>
+  );
+}
+
+/* Unified card for both normal bookings and custom trips */
+function BookingCard({ image, title, destination, date, travelers, idLabel, idValue, amount, status, isCustom, actionLink, actionLabel, badgeLabel }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        padding: '6px 10px',
-        borderRadius: 999,
-        border: '1px solid rgba(0,95,91,0.18)',
-        background: 'rgba(0,95,91,0.06)',
-        color: 'var(--primary)',
-        fontWeight: 900,
-        fontSize: '0.82rem',
+        background: '#fff',
+        borderRadius: 18,
+        border: '1px solid #ECEEEF',
+        boxShadow: hovered ? '0 20px 48px rgba(0,59,54,0.14)' : '0 6px 24px rgba(0,59,54,0.07)',
+        transform: hovered ? 'translateY(-5px)' : 'translateY(0)',
+        transition: 'all 0.25s ease',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
       }}
     >
-      {children}
-    </span>
+      {/* Image */}
+      <div style={{ position:'relative', flexShrink:0 }}>
+        <img
+          src={image || '/images/group_pic.jpg'}
+          alt={title || 'Booking'}
+          style={{ width:'100%', height:180, objectFit:'cover', display:'block' }}
+          onError={(e) => { e.target.src = '/images/group_pic.jpg'; }}
+        />
+        {/* Type chip over image */}
+        <span style={{
+          position:'absolute', top:12, left:12,
+          background: isCustom ? '#003B36' : '#F5C400',
+          color: isCustom ? '#F5C400' : '#003B36',
+          fontSize:'0.72rem', fontWeight:800, padding:'4px 10px',
+          borderRadius:999, letterSpacing:'0.5px', textTransform:'uppercase',
+        }}>
+          {isCustom ? 'Custom Trip' : 'Package'}
+        </span>
+        {/* Amount badge */}
+        {amount && !isCustom && (
+          <span style={{
+            position:'absolute', top:12, right:12,
+            background:'rgba(0,0,0,0.55)', color:'#F5C400',
+            fontSize:'0.85rem', fontWeight:800, padding:'4px 10px', borderRadius:999,
+          }}>
+            {amount}
+          </span>
+        )}
+      </div>
+
+      {/* Body */}
+      <div style={{ padding:'18px 18px 14px', display:'flex', flexDirection:'column', flex:1, gap:10 }}>
+        {/* Title */}
+        <h3 style={{
+          margin:0, fontSize:18, fontWeight:700, color:'#003B36', lineHeight:1.3,
+          display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden',
+        }}>
+          {title || 'Booking'}
+        </h3>
+
+        {/* Status */}
+        <div><StatusChip status={status} /></div>
+
+        {/* Details */}
+        <div style={{ display:'flex', flexDirection:'column', gap:7, marginTop:2 }}>
+          {destination && (
+            <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:'0.88rem', color:'#6B7280' }}>
+              <span style={{ fontSize:14 }}>📍</span>
+              <span>{destination}</span>
+            </div>
+          )}
+          {date && (
+            <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:'0.88rem', color:'#6B7280' }}>
+              <span style={{ fontSize:14 }}>📅</span>
+              <span>{date}</span>
+            </div>
+          )}
+          {travelers != null && (
+            <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:'0.88rem', color:'#6B7280' }}>
+              <span style={{ fontSize:14 }}>👥</span>
+              <span>{travelers} Traveler{travelers !== 1 ? 's' : ''}</span>
+            </div>
+          )}
+          {idValue && (
+            <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:'0.88rem', color:'#6B7280' }}>
+              <span style={{ fontSize:14 }}>🧾</span>
+              <span style={{ color:'#003B36', fontWeight:700, fontFamily:'monospace' }}>
+                {idLabel}: {shortId(idValue)}
+              </span>
+            </div>
+          )}
+          {badgeLabel && (
+            <div style={{ display:'flex', alignItems:'center', gap:8, fontSize:'0.88rem' }}>
+              <span style={{ fontSize:14 }}>✨</span>
+              <span style={{ color:'#003B36', fontWeight:600 }}>{badgeLabel}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Spacer pushes button to bottom */}
+        <div style={{ flex:1 }} />
+
+        {/* Action button — fixed at bottom */}
+        <div style={{ marginTop:8 }}>
+          <Link
+            to={actionLink || '/'}
+            style={{
+              display:'block', textAlign:'center', textDecoration:'none',
+              background:'#003B36', color:'#F5C400',
+              padding:'10px 0', borderRadius:10, fontWeight:700, fontSize:'0.9rem',
+              transition:'background 0.2s ease',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background='#005F5B'}
+            onMouseLeave={e => e.currentTarget.style.background='#003B36'}
+          >
+            {actionLabel || 'View Details'}
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -51,17 +173,13 @@ export default function Bookings() {
       try {
         const res = await getMyBookingsCombined();
         if (!mounted) return;
-
         const payload = res.data || res;
         const bookings = safeArray(payload.bookings || payload.normalBookings || payload.regularBookings);
         const custom = safeArray(payload.customTrips || payload.custom_trip_requests || payload.customRequests);
-
         setNormalBookings(bookings);
         setCustomTrips(custom);
       } catch (e) {
         if (!mounted) return;
-
-        // Backward compatible fallback: keep existing localStorage behavior.
         try {
           const raw1 = localStorage.getItem('travique_my_bookings');
           const raw2 = localStorage.getItem('travique_bookings');
@@ -75,14 +193,10 @@ export default function Bookings() {
         if (mounted) setLoading(false);
       }
     })();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
   const visibleCustom = useMemo(() => {
-    // Keep custom trips visible until completed/confirmed(=Accepted), cancelled or rejected.
-    // Requirement: remain visible until completed/cancelled/rejected.
     return customTrips.filter((t) => {
       const s = t?.status;
       if (!s) return true;
@@ -92,215 +206,104 @@ export default function Bookings() {
 
   const allCount = (normalBookings?.length || 0) + (visibleCustom?.length || 0);
 
+  /* ── Loading ── */
   if (loading) {
     return (
-      <div className="page" style={{ background: 'var(--off-white)', minHeight: '100vh' }}>
-        <div className="container" style={{ padding: '80px 20px' }}>
-          <h2 style={{ color: 'var(--primary)' }}>{title}</h2>
-          <p className="muted">Loading...</p>
+      <div style={{ background:'#F8F9FA', minHeight:'100vh' }}>
+        <div style={{ maxWidth:1200, margin:'0 auto', padding:'80px 20px' }}>
+          <h2 style={{ color:'#003B36' }}>{title}</h2>
+          <p style={{ color:'#6B7280', marginTop:8 }}>Loading your bookings...</p>
         </div>
         <Footer />
       </div>
     );
   }
 
+  /* ── Empty ── */
   if (!allCount && !err) {
     return (
-      <div className="page" style={{ background: 'var(--off-white)', minHeight: '100vh' }}>
-        <div className="container" style={{ padding: '80px 20px' }}>
-          <h2 style={{ color: 'var(--primary)' }}>{title}</h2>
-          <p className="muted">You currently have no bookings. Book your next trip with Travique.</p>
+      <div style={{ background:'#F8F9FA', minHeight:'100vh' }}>
+        <div style={{ maxWidth:1200, margin:'0 auto', padding:'80px 20px' }}>
+          <h2 style={{ color:'#003B36' }}>{title}</h2>
+          <div style={{ marginTop:40, textAlign:'center', background:'#fff', borderRadius:18, padding:'60px 24px', border:'1px solid #ECEEEF', boxShadow:'0 6px 24px rgba(0,59,54,0.06)' }}>
+            <div style={{ fontSize:48, marginBottom:16 }}>🧳</div>
+            <h3 style={{ color:'#003B36', margin:'0 0 8px' }}>No bookings yet</h3>
+            <p style={{ color:'#6B7280', marginBottom:24 }}>Book your next trip with Travique and see it here.</p>
+            <Link to="/" style={{ background:'#003B36', color:'#F5C400', padding:'12px 28px', borderRadius:40, fontWeight:700, textDecoration:'none', fontSize:'0.95rem' }}>
+              Explore Packages
+            </Link>
+          </div>
         </div>
         <Footer />
       </div>
     );
   }
 
+  /* ── Main ── */
   return (
-    <div className="page" style={{ background: 'var(--off-white)', minHeight: '100vh' }}>
-      <div className="container" style={{ padding: '80px 20px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>{title}</h2>
+    <div style={{ background:'#F8F9FA', minHeight:'100vh' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:'60px 20px 80px' }}>
 
-        {err ? (
-          <div
-            style={{
-              marginTop: 10,
-              background: '#fee2e2',
-              color: '#991b1b',
-              padding: 12,
-              borderRadius: 12,
-              fontWeight: 700,
-            }}
-          >
+        {/* Header */}
+        <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:32 }}>
+          <h2 style={{ color:'#003B36', margin:0, fontSize:'clamp(1.6rem,3vw,2rem)', fontWeight:800 }}>{title}</h2>
+          <span style={{ background:'#F5C400', color:'#003B36', fontWeight:800, fontSize:'0.8rem', padding:'3px 12px', borderRadius:999 }}>
+            {allCount} {allCount === 1 ? 'booking' : 'bookings'}
+          </span>
+        </div>
+
+        {/* Error */}
+        {err && (
+          <div style={{ background:'#fee2e2', color:'#991b1b', padding:'12px 16px', borderRadius:12, marginBottom:24, fontWeight:600 }}>
             {err}
           </div>
-        ) : null}
+        )}
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: 16,
-            marginTop: 18,
-          }}
-        >
-          {/* Regular bookings */}
+        {/* Grid */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:24 }}>
+
+          {/* Normal bookings */}
           {normalBookings.map((b, idx) => (
-            <div
+            <BookingCard
               key={b.bookingId || b._id || idx}
-              style={{
-                background: '#fff',
-                borderRadius: 16,
-                border: '1px solid var(--light-bg)',
-                padding: 12,
-                boxShadow: '0 12px 30px rgba(0,59,54,0.08)',
-              }}
-            >
-              <div style={{ display: 'flex', gap: 14, alignItems: 'stretch', flexDirection: 'row' }}>
-                <div>
-                  <img
-                    src={b.packageImage}
-                    alt={b.packageTitle || 'Package'}
-                    style={{
-                      width: '100%',
-                      height: 90,
-                      objectFit: 'cover',
-                      borderRadius: 14,
-                      border: '1px solid var(--light-bg)',
-                    }}
-                  />
-                </div>
-
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
-                    <div>
-                      <h3 style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-dark)', fontWeight: 900 }}>{b.packageTitle}</h3>
-                      <div style={{ color: 'var(--text-muted)', marginTop: 6, fontWeight: 700 }}>📍 {b.destination}</div>
-                    </div>
-
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontWeight: 1000, color: 'var(--travique-gold)', fontSize: '1.2rem' }}>
-                        {formatINR(b.totalAmount)}
-                      </div>
-                      <div
-                        style={{
-                          marginTop: 6,
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 8,
-                          padding: '6px 10px',
-                          borderRadius: 999,
-                          border: '1px solid rgba(0,95,91,0.18)',
-                          background: 'rgba(0,95,91,0.06)',
-                          color: 'var(--primary)',
-                          fontWeight: 900,
-                          fontSize: '0.82rem',
-                        }}
-                      >
-                        ✅ Confirmed
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                    <div style={{ color: 'var(--text-muted)', fontWeight: 700 }}>
-                      📅 {b.travelDate ? new Date(b.travelDate).toLocaleDateString('en-IN') : '—'}
-                    </div>
-                    <div style={{ color: 'var(--text-muted)', fontWeight: 700 }}>👥 {b.numberOfTravelers ?? '—'} Travelers</div>
-                    <div style={{ color: 'var(--text-muted)', fontWeight: 700 }}>🧾 Booking ID</div>
-                    <div style={{ color: 'var(--travique-dark)', fontWeight: 1000 }}>{b.bookingId || b._id || '—'}</div>
-                  </div>
-
-                  <div style={{ marginTop: 12 }}>
-                    <Link to="/" className="btn btn-outline" style={{ fontSize: 13, padding: '7px 12px', textDecoration: 'none' }}>
-                      Browse More
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+              image={b.packageImage}
+              title={b.packageTitle}
+              destination={b.destination || b.packageTitle}
+              date={b.travelDate ? new Date(b.travelDate).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : null}
+              travelers={b.numberOfTravelers}
+              idLabel="Booking ID"
+              idValue={b.bookingId || b._id}
+              amount={b.totalAmount ? formatINR(b.totalAmount) : null}
+              status={b.status || 'confirmed'}
+              isCustom={false}
+              actionLink="/"
+              actionLabel="Browse More"
+            />
           ))}
 
-          {/* Custom trip requests */}
+          {/* Custom trips */}
           {visibleCustom.map((t, idx) => (
-            <div
+            <BookingCard
               key={t._id || t.customTripId || idx}
-              style={{
-                background: '#fff',
-                borderRadius: 16,
-                border: '1px solid var(--light-bg)',
-                padding: 12,
-                boxShadow: '0 12px 30px rgba(0,59,54,0.08)',
-              }}
-            >
-              <div style={{ display: 'flex', gap: 14, alignItems: 'stretch', flexDirection: 'row' }}>
-                <div>
-                  <img
-                    src={t.packageImage || t.coverImage || t.thumbnail || '/images/group_pic.jpg'}
-                    alt="Custom Trip"
-                    style={{ width: '100%', height: 90, objectFit: 'cover', borderRadius: 14, border: '1px solid var(--light-bg)' }}
-                  />
-                </div>
-
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
-                    <div>
-                      <h3 style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-dark)', fontWeight: 900 }}>Custom Trip</h3>
-                      <div style={{ color: 'var(--text-muted)', marginTop: 6, fontWeight: 700 }}>📍 {t.destination || '—'}</div>
-                    </div>
-
-                    <div style={{ textAlign: 'right' }}>
-                      <Badge>Custom Trip</Badge>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                    <div style={{ color: 'var(--text-muted)', fontWeight: 700 }}>
-                      📅 {t.travelDate ? new Date(t.travelDate).toLocaleDateString('en-IN') : '—'}
-                    </div>
-                    <div style={{ color: 'var(--text-muted)', fontWeight: 700 }}>👥 {t.numberOfTravelers ?? '—'} Travelers</div>
-                    <div style={{ color: 'var(--text-muted)', fontWeight: 700 }}>🧾 Request ID</div>
-                    <div style={{ color: 'var(--travique-dark)', fontWeight: 1000 }}>{t._id || '—'}</div>
-                  </div>
-
-                  <div style={{ marginTop: 10 }}>
-                    <StatusBadge status={t.status || 'Pending Review'} />
-                  </div>
-
-                  <div style={{ marginTop: 12, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                    <Link
-                      to={`/custom-trip/${t._id}`}
-                      className="btn btn-primary"
-                      style={{ fontSize: 13, padding: '7px 12px', textDecoration: 'none' }}
-                    >
-                      View Details
-                    </Link>
-                    {t.status && ['Accepted', 'Cancelled', 'Rejected'].includes(t.status) ? (
-                      <span
-                        style={{
-                          alignSelf: 'center',
-                          padding: '6px 10px',
-                          borderRadius: 999,
-                          border: '1px solid rgba(0,95,91,0.18)',
-                          background: 'rgba(0,95,91,0.06)',
-                          color: 'var(--primary)',
-                          fontWeight: 900,
-                          fontSize: '0.82rem',
-                        }}
-                      >
-                        ✅ Updated
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            </div>
+              image={t.packageImage || t.coverImage || t.thumbnail || '/images/group_pic.jpg'}
+              title={`Custom Trip — ${t.destination || 'Your Destination'}`}
+              destination={t.destination}
+              date={t.travelDate ? new Date(t.travelDate).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : null}
+              travelers={t.numberOfTravelers}
+              idLabel="Request ID"
+              idValue={t._id}
+              amount={null}
+              status={t.status || 'Pending Review'}
+              isCustom={true}
+              badgeLabel={t.budgetRange ? `Budget: ${t.budgetRange}` : null}
+              actionLink={`/custom-trip/${t._id}`}
+              actionLabel="View Details"
+            />
           ))}
+
         </div>
       </div>
-
       <Footer />
     </div>
   );
 }
-

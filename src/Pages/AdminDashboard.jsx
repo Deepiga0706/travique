@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/AdminDashboard.css";
 
-
 const API = "http://localhost:5000/api";
 
 export default function AdminDashboard() {
@@ -11,32 +10,46 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [packages, setPackages] = useState([]);
   const [bookings, setBookings] = useState([]);
-  const [stats, setStats] = useState({ totalPackages: 0, totalBookings: 0, totalRevenue: 0, pendingBookings: 0 });
+  const [stats, setStats] = useState({
+    totalPackages: 0,
+    totalBookings: 0,
+    totalRevenue: 0,
+    pendingBookings: 0,
+  });
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
   const [newPkg, setNewPkg] = useState({
-    title: "", slug: "", description: "", price: "", duration: "",
-    category: "", location: "", image: "", highlights: ""
+    title: "",
+    slug: "",
+    description: "",
+    price: "",
+    duration: "",
+    category: "",
+    location: "",
+    image: "",
+    highlights: "",
   });
 
   const [user] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("travique_current_user") || "{}"); }
-    catch { return {}; }
+    try {
+      return JSON.parse(localStorage.getItem("travique_current_user") || "{}");
+    } catch {
+      return {};
+    }
   });
 
   useEffect(() => {
     fetchAll();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   async function fetchAll() {
     setLoading(true);
     try {
       const [pkgRes, bookRes] = await Promise.all([
         axios.get(`${API}/packages`),
-        axios.get(`${API}/admin/bookings`, { headers: authHeader() })
+        axios.get(`${API}/admin/bookings`, { headers: authHeader() }),
       ]);
       const pkgs = pkgRes.data || [];
       const bkgs = bookRes.data || [];
@@ -46,9 +59,11 @@ export default function AdminDashboard() {
         totalPackages: pkgs.length,
         totalBookings: bkgs.length,
         totalRevenue: bkgs.reduce((s, b) => s + (b.totalAmount || 0), 0),
-        pendingBookings: bkgs.filter(b => b.status === "pending").length
+        pendingBookings: bkgs.filter((b) => b.status === "pending").length,
       });
-    } catch (e) { showToast("Failed to load data", "error"); }
+    } catch (e) {
+      showToast("Failed to load data", "error");
+    }
     setLoading(false);
   }
 
@@ -68,13 +83,28 @@ export default function AdminDashboard() {
       const payload = {
         ...newPkg,
         price: Number(newPkg.price),
-        highlights: newPkg.highlights.split(",").map(h => h.trim()).filter(Boolean)
+        highlights: newPkg.highlights
+          .split(",")
+          .map((h) => h.trim())
+          .filter(Boolean),
       };
       await axios.post(`${API}/admin/packages`, payload, { headers: authHeader() });
       showToast("Package added successfully!");
-      setNewPkg({ title: "", slug: "", description: "", price: "", duration: "", category: "", location: "", image: "", highlights: "" });
+      setNewPkg({
+        title: "",
+        slug: "",
+        description: "",
+        price: "",
+        duration: "",
+        category: "",
+        location: "",
+        image: "",
+        highlights: "",
+      });
       fetchAll();
-    } catch (e) { showToast(e.response?.data?.message || "Failed to add package", "error"); }
+    } catch (e) {
+      showToast(e.response?.data?.message || "Failed to add package", "error");
+    }
   }
 
   async function handleDeletePackage(id, title) {
@@ -83,7 +113,9 @@ export default function AdminDashboard() {
       await axios.delete(`${API}/admin/packages/${id}`, { headers: authHeader() });
       showToast("Package deleted!");
       fetchAll();
-    } catch (e) { showToast("Failed to delete package", "error"); }
+    } catch (e) {
+      showToast("Failed to delete package", "error");
+    }
   }
 
   function handleLogout() {
@@ -110,7 +142,7 @@ export default function AdminDashboard() {
         </div>
 
         <nav className="sidebar-nav">
-          {navItems.map(item => (
+          {navItems.map((item) => (
             <button
               key={item.key}
               className={`nav-item ${activeTab === item.key ? "active" : ""}`}
@@ -134,11 +166,11 @@ export default function AdminDashboard() {
       <main className="admin-main">
         {/* Topbar */}
         <header className="admin-topbar">
-          <div className="topbar-title">
-            {navItems.find(n => n.key === activeTab)?.label}
-          </div>
+          <div className="topbar-title">{navItems.find((n) => n.key === activeTab)?.label}</div>
           <div className="topbar-user">
-            <span className="user-avatar">{user.email?.[0]?.toUpperCase()}</span>
+            <span className="user-avatar">
+              {(user.firstname || user.email || "?").charAt(0).toUpperCase()}
+            </span>
             <span className="user-email">{user.email}</span>
             <span className="role-badge">Admin</span>
           </div>
@@ -148,15 +180,29 @@ export default function AdminDashboard() {
         {toast && <div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
 
         <div className="admin-content">
-
           {/* DASHBOARD TAB */}
           {activeTab === "dashboard" && (
             <div className="tab-content">
               <div className="stats-grid">
                 <StatCard icon="📦" label="Total Packages" value={stats.totalPackages} color="amber" />
-                <StatCard icon="🎫" label="Total Bookings" value={stats.totalBookings} color="teal" />
-                <StatCard icon="💰" label="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} color="rose" />
-                <StatCard icon="⏳" label="Pending Bookings" value={stats.pendingBookings} color="violet" />
+                <StatCard
+                  icon="🎫"
+                  label="Total Bookings"
+                  value={stats.totalBookings}
+                  color="teal"
+                />
+                <StatCard
+                  icon="💰"
+                  label="Total Revenue"
+                  value={`₹${stats.totalRevenue.toLocaleString()}`}
+                  color="rose"
+                />
+                <StatCard
+                  icon="⏳"
+                  label="Pending Bookings"
+                  value={stats.pendingBookings}
+                  color="violet"
+                />
               </div>
 
               <div className="recent-section">
@@ -166,7 +212,11 @@ export default function AdminDashboard() {
 
               <div className="recent-section">
                 <h2 className="section-title">Recent Packages</h2>
-                <PackagesList packages={packages.slice(0, 4)} onDelete={handleDeletePackage} compact />
+                <PackagesList
+                  packages={packages.slice(0, 4)}
+                  onDelete={handleDeletePackage}
+                  compact
+                />
               </div>
             </div>
           )}
@@ -175,7 +225,9 @@ export default function AdminDashboard() {
           {activeTab === "packages" && (
             <div className="tab-content">
               <div className="tab-header">
-                <h2 className="section-title">All Packages <span className="count-badge">{packages.length}</span></h2>
+                <h2 className="section-title">
+                  All Packages <span className="count-badge">{packages.length}</span>
+                </h2>
                 <button className="btn-primary" onClick={() => setActiveTab("add-package")}>+ Add New</button>
               </div>
               {loading ? <Loader /> : <PackagesList packages={packages} onDelete={handleDeletePackage} />}
@@ -190,27 +242,46 @@ export default function AdminDashboard() {
                 <div className="form-grid">
                   <div className="form-group">
                     <label>Title *</label>
-                    <input required placeholder="e.g. Kerala Backwaters Tour" value={newPkg.title}
-                      onChange={e => setNewPkg({ ...newPkg, title: e.target.value })} />
+                    <input
+                      required
+                      placeholder="e.g. Kerala Backwaters Tour"
+                      value={newPkg.title}
+                      onChange={(e) => setNewPkg({ ...newPkg, title: e.target.value })}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Slug *</label>
-                    <input required placeholder="e.g. kerala-backwaters-tour" value={newPkg.slug}
-                      onChange={e => setNewPkg({ ...newPkg, slug: e.target.value })} />
+                    <input
+                      required
+                      placeholder="e.g. kerala-backwaters-tour"
+                      value={newPkg.slug}
+                      onChange={(e) => setNewPkg({ ...newPkg, slug: e.target.value })}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Price (₹) *</label>
-                    <input required type="number" placeholder="15000" value={newPkg.price}
-                      onChange={e => setNewPkg({ ...newPkg, price: e.target.value })} />
+                    <input
+                      required
+                      type="number"
+                      placeholder="15000"
+                      value={newPkg.price}
+                      onChange={(e) => setNewPkg({ ...newPkg, price: e.target.value })}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Duration</label>
-                    <input placeholder="5 Days / 4 Nights" value={newPkg.duration}
-                      onChange={e => setNewPkg({ ...newPkg, duration: e.target.value })} />
+                    <input
+                      placeholder="5 Days / 4 Nights"
+                      value={newPkg.duration}
+                      onChange={(e) => setNewPkg({ ...newPkg, duration: e.target.value })}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Category</label>
-                    <select value={newPkg.category} onChange={e => setNewPkg({ ...newPkg, category: e.target.value })}>
+                    <select
+                      value={newPkg.category}
+                      onChange={(e) => setNewPkg({ ...newPkg, category: e.target.value })}
+                    >
                       <option value="">Select category</option>
                       <option value="adventure">Adventure</option>
                       <option value="cultural">Cultural</option>
@@ -222,23 +293,39 @@ export default function AdminDashboard() {
                   </div>
                   <div className="form-group">
                     <label>Location</label>
-                    <input placeholder="Kerala, India" value={newPkg.location}
-                      onChange={e => setNewPkg({ ...newPkg, location: e.target.value })} />
+                    <input
+                      placeholder="Kerala, India"
+                      value={newPkg.location}
+                      onChange={(e) => setNewPkg({ ...newPkg, location: e.target.value })}
+                    />
                   </div>
                   <div className="form-group full">
                     <label>Image URL</label>
-                    <input placeholder="https://..." value={newPkg.image}
-                      onChange={e => setNewPkg({ ...newPkg, image: e.target.value })} />
+                    <input
+                      placeholder="https://..."
+                      value={newPkg.image}
+                      onChange={(e) => setNewPkg({ ...newPkg, image: e.target.value })}
+                    />
                   </div>
                   <div className="form-group full">
                     <label>Description *</label>
-                    <textarea required rows={4} placeholder="Describe the package..." value={newPkg.description}
-                      onChange={e => setNewPkg({ ...newPkg, description: e.target.value })} />
+                    <textarea
+                      required
+                      rows={4}
+                      placeholder="Describe the package..."
+                      value={newPkg.description}
+                      onChange={(e) => setNewPkg({ ...newPkg, description: e.target.value })}
+                    />
                   </div>
                   <div className="form-group full">
-                    <label>Highlights <span className="hint">(comma separated)</span></label>
-                    <input placeholder="Houseboat stay, Ayurvedic spa, Backwater cruise" value={newPkg.highlights}
-                      onChange={e => setNewPkg({ ...newPkg, highlights: e.target.value })} />
+                    <label>
+                      Highlights <span className="hint">(comma separated)</span>
+                    </label>
+                    <input
+                      placeholder="Houseboat stay, Ayurvedic spa, Backwater cruise"
+                      value={newPkg.highlights}
+                      onChange={(e) => setNewPkg({ ...newPkg, highlights: e.target.value })}
+                    />
                   </div>
                 </div>
                 <div className="form-actions">
@@ -253,12 +340,14 @@ export default function AdminDashboard() {
           {activeTab === "bookings" && (
             <div className="tab-content">
               <div className="tab-header">
-                <h2 className="section-title">All Bookings <span className="count-badge">{bookings.length}</span></h2>
+                <h2 className="section-title">
+                  All Bookings <span className="count-badge">{bookings.length}</span>
+                </h2>
               </div>
               <div className="booking-stats-row">
-                {["confirmed", "pending", "cancelled"].map(s => (
+                {["confirmed", "pending", "cancelled"].map((s) => (
                   <div key={s} className={`booking-stat-chip status-${s}`}>
-                    <strong>{bookings.filter(b => b.status === s).length}</strong> {s}
+                    <strong>{bookings.filter((b) => b.status === s).length}</strong> {s}
                   </div>
                 ))}
               </div>
@@ -272,22 +361,43 @@ export default function AdminDashboard() {
               <h2 className="section-title">Admin Profile</h2>
               <div className="profile-card">
                 <div className="profile-avatar-lg">
-                  {(user.firstname || user.name || user.email || '?')[0].toUpperCase()}
+                  {(user.firstname || user.name || user.email || "?")[0].toUpperCase()}
                 </div>
                 <div className="profile-info">
                   {(user.firstname || user.name) && (
-                    <div className="profile-row"><span>Name</span><strong>{user.firstname ? `${user.firstname} ${user.lastname || ''}`.trim() : user.name}</strong></div>
+                    <div className="profile-row">
+                      <span>Name</span>
+                      <strong>
+                        {user.firstname
+                          ? `${user.firstname} ${user.lastname || ""}`.trim()
+                          : user.name}
+                      </strong>
+                    </div>
                   )}
-                  <div className="profile-row"><span>Email</span><strong>{user.email}</strong></div>
-                  <div className="profile-row"><span>Role</span><span className="role-badge">Admin</span></div>
-                  <div className="profile-row"><span>Member Since</span><strong>{user.createdAt ? new Date(user.createdAt).getFullYear() : '—'}</strong></div>
-                  <div className="profile-row"><span>Packages</span><strong>{stats.totalPackages}</strong></div>
-                  <div className="profile-row"><span>Total Bookings</span><strong>{stats.totalBookings}</strong></div>
+                  <div className="profile-row">
+                    <span>Email</span>
+                    <strong>{user.email}</strong>
+                  </div>
+                  <div className="profile-row">
+                    <span>Role</span>
+                    <span className="role-badge">Admin</span>
+                  </div>
+                  <div className="profile-row">
+                    <span>Member Since</span>
+                    <strong>{user.createdAt ? new Date(user.createdAt).getFullYear() : "—"}</strong>
+                  </div>
+                  <div className="profile-row">
+                    <span>Packages</span>
+                    <strong>{stats.totalPackages}</strong>
+                  </div>
+                  <div className="profile-row">
+                    <span>Total Bookings</span>
+                    <strong>{stats.totalBookings}</strong>
+                  </div>
                 </div>
               </div>
             </div>
           )}
-
         </div>
       </main>
     </div>
@@ -308,7 +418,7 @@ function PackagesList({ packages, onDelete, compact }) {
   if (!packages.length) return <div className="empty-state">No packages found.</div>;
   return (
     <div className={`pkg-grid ${compact ? "pkg-grid-compact" : ""}`}>
-      {packages.map(pkg => (
+      {packages.map((pkg) => (
         <div key={pkg._id || pkg.slug} className="pkg-card">
           {pkg.image && <img src={pkg.image} alt={pkg.title} className="pkg-thumb" />}
           <div className="pkg-card-body">
@@ -319,7 +429,13 @@ function PackagesList({ packages, onDelete, compact }) {
             </div>
             {pkg.category && <span className={`pkg-cat cat-${pkg.category}`}>{pkg.category}</span>}
           </div>
-          <button className="delete-btn" onClick={() => onDelete(pkg._id, pkg.title)} title="Delete">✕</button>
+          <button
+            className="delete-btn"
+            onClick={() => onDelete(pkg._id, pkg.title)}
+            title="Delete"
+          >
+            ✕
+          </button>
         </div>
       ))}
     </div>
@@ -346,10 +462,16 @@ function BookingsTable({ bookings, compact }) {
             <tr key={b._id || i}>
               <td className="td-num">{i + 1}</td>
               <td>{b.customerName || b.user?.name || "—"}</td>
-              <td className="td-pkg">{b.packageTitle || b.package?.title || "—"}</td>
-              <td>{b.travelDate ? new Date(b.travelDate).toLocaleDateString("en-IN") : "—"}</td>
+              <td>{b.packageTitle || b.package?.title || "—"}</td>
+              <td>
+                {b.travelDate
+                  ? new Date(b.travelDate).toLocaleDateString("en-IN")
+                  : "—"}
+              </td>
               <td className="td-amt">₹{(b.totalAmount || 0).toLocaleString()}</td>
-              <td><span className={`status-pill status-${b.status}`}>{b.status || "pending"}</span></td>
+              <td>
+                <span className={`status-pill status-${b.status}`}>{b.status || "pending"}</span>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -359,5 +481,12 @@ function BookingsTable({ bookings, compact }) {
 }
 
 function Loader() {
-  return <div className="loader"><span></span><span></span><span></span></div>;
+  return (
+    <div className="loader">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  );
 }
+

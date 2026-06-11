@@ -17,7 +17,9 @@ export default function CustomTripDetails() {
       try {
         const res = await getCustomTripDetails(id);
         if (!mounted) return;
-        setData(res.data || res);
+        // Backend returns { success: true, trip: { ...fields } }
+        const payload = res.data || res;
+        setData(payload.trip || payload.customTrip || payload.request || payload);
       } catch (e) {
         if (!mounted) return;
         setErr(e?.response?.data?.message || 'Failed to load request');
@@ -58,7 +60,7 @@ export default function CustomTripDetails() {
     );
   }
 
-  const req = data?.customTrip || data?.request || data;
+  const req = data?.fullName ? data : (data?.customTrip || data?.request || data);
 
   return (
     <div className="page" style={{ background: 'var(--off-white)', minHeight: '100vh' }}>
