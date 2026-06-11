@@ -30,7 +30,7 @@ async function onSubmit(e){
   try {
 
     await axios.post(
-      "http://localhost:5000/api/user/signup",
+     `${process.env.REACT_APP_API_URL}/api/user/signup`,
       {
         firstname: form.name,
         lastname: "",

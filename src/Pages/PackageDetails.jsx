@@ -29,7 +29,7 @@ export default function PackageDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/packages/${slug}`)
+      .get(`${process.env.REACT_APP_API_URL}/api/packages/${slug}`)
       .then((res) => { setPkg(res.data); setLoading(false); })
       .catch((err) => { console.log(err); setLoading(false); });
   }, [slug]);
@@ -44,7 +44,7 @@ export default function PackageDetails() {
 
     const cat = Array.isArray(pkg.category) ? pkg.category[0] : pkg.category;
     if (!cat) return;
-    axios.get(`http://localhost:5000/api/packages?category=${encodeURIComponent(cat)}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/packages?category=${encodeURIComponent(cat)}`)
       .then(res => {
         const list = (res.data || []).filter(p => (p.slug || p.id) !== (pkg.slug || pkg.id));
         setRelated(list.slice(0, 4));

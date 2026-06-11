@@ -20,10 +20,14 @@ export default function Login({ onAuth }) {
     if (!form.email || !form.password) { setErr("Please fill both fields."); return; }
     try {
 
-      const response = await axios.post("http://localhost:5000/api/user/login", {
-        email: form.email,
-        password: form.password
-      });
+      const response = await axios.post(
+  `${process.env.REACT_APP_API_URL}/api/user/login`,
+  {
+    email: form.email,
+    password: form.password,
+  }
+);
+     
 
 console.log("LOGIN RESPONSE:", response.data.user);
       localStorage.setItem("token", response.data.token);
@@ -53,7 +57,10 @@ localStorage.setItem(
     setResetLoading(true);
     setResetErr('');
     try {
-      await axios.post("http://localhost:5000/api/user/forgot-password", { email: resetEmail });
+      await axios.post(
+  `${process.env.REACT_APP_API_URL}/api/user/forgot-password`,
+  { email: resetEmail }
+);
       setResetMsg("Password reset link sent! Check your email inbox.");
     } catch (error) {
       setResetErr(error.response?.data?.message || "Failed to send reset email. Please try again.");

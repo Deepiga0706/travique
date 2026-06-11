@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/AdminDashboard.css";
 
-const API = "http://localhost:5000/api";
+const API = `${process.env.REACT_APP_API_URL}/api`;
 
 export default function AdminDashboard() {
   const navigate = useNavigate();

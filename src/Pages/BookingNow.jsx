@@ -79,7 +79,8 @@ export default function BookingNow() {
     // ── MongoDB save ──────────────────────────────────────────────
     try {
       const user = JSON.parse(localStorage.getItem("travique_current_user") || "null") || null;
-      await axios.post("http://localhost:5000/api/bookings", {
+      await axios.post(
+  `${process.env.REACT_APP_API_URL}/api/bookings`, {
         packageId:      pkg._id || pkg.id || pkg.slug || "",
         packageName:    pkg.title || "",
         customerName:   fullName.trim(),
