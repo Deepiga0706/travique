@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState } from 'react';
 import Homepage from './homepage';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AboutUs from './Pages/AboutUs';
 import FAQ from './Pages/FAQ';
 import ContactUs from './Pages/ContactUs';
@@ -15,9 +15,23 @@ import PackageDetails from './Pages/PackageDetails';
 import EducationalTrip from './Pages/EducationalTrip';
 import IndiaToursPage from './Pages/IndiaTourpage';
 import { WhatsAppWidget } from './Components/whatsapp';
+import AdminDashboard from './Pages/AdminDashboard';
+
+// ── Role-based Route Guard ────────────────────────────────────────
+function ProtectedRoute({ children, requiredRole }) {
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem('travique_current_user') || 'null'); } catch {}
+
+  if (!user || !user.email) return <Navigate to="/login" replace />;
+  if (requiredRole && user.role?.toLowerCase() !== requiredRole.toLowerCase()) return <Navigate to="/" replace />;
+  return children;
+}
 
 function App() {
-  const [user, setUser] = useState(()=>{ try{ return JSON.parse(localStorage.getItem('travique_current_user')||'null') }catch(e){return null} });
+  const [user, setUser] = useState(()=>{
+    try { return JSON.parse(localStorage.getItem('travique_current_user')||'null') }
+    catch(e) { return null }
+  });
 
   return (
     <BrowserRouter>
@@ -44,6 +58,14 @@ function App() {
         <Route path="/luxury-retreats" element={<CategoryPage slug="luxury-retreats" title="Luxury Retreats" />} />
         <Route path="/package/:slug" element={<PackageDetails />} />
         <Route path="/educational" element={<EducationalTrip />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import ProfileDropdown from './ProfileDropdown';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Home' },
- 
   { to: '/india', label: 'All India Tours' },
   { to: '/educational', label: 'Educational Tours' },
   { to: '/group', label: 'Group Tours' },
@@ -14,6 +13,16 @@ const NAV_ITEMS = [
 
 export default function Navbar({ user, onLogout }) {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  const hiddenRoutes = [
+    '/login',
+    '/signup'
+  ];
+
+  if (hiddenRoutes.includes(location.pathname)) {
+    return null;
+  }
 
   return (
     <header className="nav-wrap">
@@ -47,7 +56,9 @@ export default function Navbar({ user, onLogout }) {
 
         <div className="nav-cta">
           {!user ? (
-            <NavLink to="/login"><button className="btn btn-primary">Sign In</button></NavLink>
+            <NavLink to="/login">
+              <button className="btn btn-primary">Sign In</button>
+            </NavLink>
           ) : (
             <ProfileDropdown user={user} onLogout={onLogout} />
           )}

@@ -16,7 +16,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section id="home" className="hero">
+    <section id="home" className="hero" style={{background:'var(--ocean)'}}>
       <div className="hero-slider">
         {slides.map((s, i) => (
           <div

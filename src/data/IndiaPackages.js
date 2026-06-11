@@ -8,7 +8,7 @@ export const indiaPackages = [
     title: 'Kashmir Paradise',
     destination: 'Srinagar, Gulmarg, Pahalgam',
     region: 'North India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1597074866923-dc0589150358?w=800)',
+    image: 'https://images.unsplash.com/photo-1597074866923-dc0589150358?w=800',
     duration: '6 Days / 5 Nights',
     price: 24999,
     originalPrice: 32999,
@@ -26,7 +26,7 @@ export const indiaPackages = [
     title: 'Himachal Adventure',
     destination: 'Shimla, Manali, Dharamshala',
     region: 'North India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800)',
+    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800',
     duration: '7 Days / 6 Nights',
     price: 18999,
     originalPrice: 25999,
@@ -44,7 +44,7 @@ export const indiaPackages = [
     title: 'Uttarakhand Escape',
     destination: 'Nainital, Mussoorie, Rishikesh',
     region: 'North India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1606210122158-eeb10e0823bf?w=800)',
+    image: 'https://images.unsplash.com/photo-1606210122158-eeb10e0823bf?w=800',
     duration: '5 Days / 4 Nights',
     price: 15999,
     originalPrice: 21999,
@@ -62,7 +62,7 @@ export const indiaPackages = [
     title: 'Golden Triangle Tour',
     destination: 'Delhi, Agra, Jaipur',
     region: 'North India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800)',
+    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800',
     duration: '5 Days / 4 Nights',
     price: 19999,
     originalPrice: 27999,
@@ -81,7 +81,7 @@ export const indiaPackages = [
     title: 'Kerala Backwaters',
     destination: 'Kochi, Alleppey, Munnar',
     region: 'South India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800)',
+    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800',
     duration: '6 Days / 5 Nights',
     price: 22999,
     originalPrice: 29999,
@@ -99,7 +99,7 @@ export const indiaPackages = [
     title: 'Ooty & Kodaikanal',
     destination: 'Ooty, Kodaikanal, Coimbatore',
     region: 'South India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800)',
+    image: 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800',
     duration: '5 Days / 4 Nights',
     price: 16999,
     originalPrice: 22999,
@@ -117,7 +117,7 @@ export const indiaPackages = [
     title: 'Mysore & Coorg',
     destination: 'Mysore, Coorg, Bangalore',
     region: 'South India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1600100397608-577b8eb4b3ed?w=800)',
+    image: 'https://images.unsplash.com/photo-1600100397608-577b8eb4b3ed?w=800',
     duration: '4 Days / 3 Nights',
     price: 13999,
     originalPrice: 18999,
@@ -135,7 +135,7 @@ export const indiaPackages = [
     title: 'Pondicherry Retreat',
     destination: 'Pondicherry, Auroville, Mahabalipuram',
     region: 'South India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800)',
+    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800',
     duration: '4 Days / 3 Nights',
     price: 12999,
     originalPrice: 17999,
@@ -154,7 +154,7 @@ export const indiaPackages = [
     title: 'Goa Beach Escape',
     destination: 'North Goa, South Goa',
     region: 'West India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800)',
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800',
     duration: '5 Days / 4 Nights',
     price: 14999,
     originalPrice: 19999,
@@ -172,7 +172,7 @@ export const indiaPackages = [
     title: 'Royal Rajasthan',
     destination: 'Jaipur, Udaipur, Jodhpur, Jaisalmer',
     region: 'West India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800)',
+    image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800',
     duration: '8 Days / 7 Nights',
     price: 34999,
     originalPrice: 45999,
@@ -190,7 +190,7 @@ export const indiaPackages = [
     title: 'Gujarat Heritage',
     destination: 'Ahmedabad, Kutch, Gir, Dwarka',
     region: 'West India',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1609948543911-7f45f7c7bc2e?w=800)',
+    image: 'https://images.unsplash.com/photo-1609948543911-7f45f7c7bc2e?w=800',
     duration: '7 Days / 6 Nights',
     price: 26999,
     originalPrice: 35999,
@@ -209,7 +209,7 @@ export const indiaPackages = [
     title: 'Andaman Honeymoon',
     destination: 'Port Blair, Havelock, Neil Island',
     region: 'Islands',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800)',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800',
     duration: '6 Days / 5 Nights',
     price: 32999,
     originalPrice: 42999,
@@ -230,56 +230,56 @@ export const indiaCategories = [
     id: 'family',
     title: 'Family Vacations',
     description: 'Memories for every generation',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=800)',
+    image: 'https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=800',
     icon: '👨‍👩‍👧‍👦'
   },
   {
     id: 'honeymoon',
     title: 'Honeymoon Packages',
     description: 'Romantic getaways',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1439539698758-ba2680ecadb9?w=800)',
+    image: 'https://images.unsplash.com/photo-1439539698758-ba2680ecadb9?w=800',
     icon: '💑'
   },
   {
     id: 'adventure',
     title: 'Adventure Tours',
     description: 'Thrilling experiences',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800)',
+    image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800',
     icon: '🏔️'
   },
   {
     id: 'pilgrimage',
     title: 'Pilgrimage Tours',
     description: 'Sacred journeys',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1545126178-862cdb469409?w=800)',
+    image: 'https://images.unsplash.com/photo-1545126178-862cdb469409?w=800',
     icon: '🙏'
   },
   {
     id: 'luxury',
     title: 'Luxury Escapes',
     description: 'Premium vacations',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800)',
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
     icon: '👑'
   },
   {
     id: 'wildlife',
     title: 'Wildlife Safaris',
     description: 'Nature encounters',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1549366021-9f761d450615?w=800)',
+    image: 'https://images.unsplash.com/photo-1549366021-9f761d450615?w=800',
     icon: '🐅'
   },
   {
     id: 'educational',
     title: 'Educational Tours',
     description: 'Learning through travel',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?w=800)',
+    image: 'https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?w=800',
     icon: '📚'
   },
   {
     id: 'group',
     title: 'Group Tours',
     description: 'Travel together',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800)',
+    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800',
     icon: '👥'
   }
 ];
@@ -290,7 +290,7 @@ export const indiaTestimonials = [
     id: 1,
     name: 'Priya Sharma',
     location: 'Mumbai, Maharashtra',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150)',
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
     rating: 5,
     review: 'Our Kerala trip was absolutely magical! The houseboat experience and the personalized itinerary made it unforgettable. Travique handled everything perfectly.',
     package: 'Kerala Backwaters'
@@ -299,7 +299,7 @@ export const indiaTestimonials = [
     id: 2,
     name: 'Rajesh Kumar',
     location: 'Delhi',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150)',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
     rating: 5,
     review: 'The Royal Rajasthan tour exceeded all expectations. From heritage hotels to the desert safari, every moment was carefully curated. Highly recommend!',
     package: 'Royal Rajasthan'
@@ -308,7 +308,7 @@ export const indiaTestimonials = [
     id: 3,
     name: 'Anita Desai',
     location: 'Bangalore, Karnataka',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150)',
+    image: '://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
     rating: 5,
     review: 'Took our kids on the Golden Triangle tour. The guide was knowledgeable and patient. Kids learned so much about Indian history. Perfect family trip!',
     package: 'Golden Triangle Tour'
@@ -317,7 +317,7 @@ export const indiaTestimonials = [
     id: 4,
     name: 'Vikram Singh',
     location: 'Chandigarh, Punjab',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150)',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
     rating: 4,
     review: 'Kashmir is truly paradise! The houseboat stay on Dal Lake was romantic and serene. Travique made our honeymoon extra special with thoughtful touches.',
     package: 'Kashmir Paradise'
@@ -326,7 +326,7 @@ export const indiaTestimonials = [
     id: 5,
     name: 'Meera Nair',
     location: 'Chennai, Tamil Nadu',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150)',
+    image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150',
     rating: 5,
     review: 'The Andaman trip was perfect for our anniversary. Crystal clear waters, amazing snorkeling, and the resort was top-notch. Will book with Travique again!',
     package: 'Andaman Honeymoon'
@@ -339,49 +339,49 @@ export const indiaGallery = [
     id: 1,
     title: 'Taj Mahal',
     location: 'Agra, Uttar Pradesh',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800)'
+    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800'
   },
   {
     id: 2,
     title: 'Dal Lake',
     location: 'Srinagar, Kashmir',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1597074866923-dc0589150358?w=800)'
+    image: 'https://images.unsplash.com/photo-1597074866923-dc0589150358?w=800'
   },
   {
     id: 3,
     title: 'Kerala Backwaters',
     location: 'Alleppey, Kerala',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800)'
+    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800'
   },
   {
     id: 4,
     title: 'Goa Beaches',
     location: 'Goa',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800)'
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800'
   },
   {
     id: 5,
     title: 'Hawa Mahal',
     location: 'Jaipur, Rajasthan',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800)'
+    image: '(https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800'
   },
   {
     id: 6,
     title: 'Radhanagar Beach',
     location: 'Havelock, Andaman',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800)'
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800'
   },
   {
     id: 7,
     title: 'Living Root Bridges',
     location: 'Cherrapunji, Meghalaya',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=800)'
+    image: '://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=800'
   },
   {
     id: 8,
     title: 'Pangong Lake',
     location: 'Ladakh',
-    image: '[images.unsplash.com](https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800)'
+    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800'
   }
 ];
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../Components/Footer';
 
 const trips = [
   {
@@ -40,7 +41,8 @@ export default function EducationalTrip(){
   const navigate = useNavigate();
 
   return (
-    <section className="container category-page" style={{padding:'60px 20px'}}>
+    <div className="page" style={{background:'var(--off-white)',minHeight:'100vh'}}>
+      <section className="container category-page" style={{padding:'60px 20px'}}>
       <h2 className="section-title">Educational Trips</h2>
       <p className="muted">Curated learning experiences and group-friendly itineraries.</p>
 
@@ -63,6 +65,8 @@ export default function EducationalTrip(){
           </article>
         ))}
       </div>
-    </section>
+      </section>
+      <Footer />
+    </div>
   )
 }

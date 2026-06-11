@@ -59,8 +59,8 @@ async function onSubmit(e){
   useEffect(()=>{ setErr('') }, [form])
 
   return (
-    <div className="page auth-page">
-      <div className="container" style={{padding:'80px 20px',maxWidth:720}}>
+    <div className="page" style={{background:'var(--light-bg)',minHeight:'100vh'}}>
+      <div className="container" style={{padding:'80px 20px',maxWidth:720,margin:'0 auto'}}>
         <div className="auth-card">
           <h2>Create an account</h2>
           <p className="muted">Join Travique to manage bookings and get personalised offers.</p>
@@ -87,6 +87,7 @@ async function onSubmit(e){
           <div className="auth-footer">Already have an account? <button className="link-btn" onClick={()=>navigate('/login')}>Login</button></div>
         </div>
       </div>
+   
     </div>
   )
 };

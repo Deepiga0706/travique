@@ -14,6 +14,7 @@ import IndiaStats from '../Components/IndiaStats';
 import IndiaGallery from '../Components/IndiaGallery';
 
 import '../styles/IndiaTours.css';
+import Footer from '../Components/Footer';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -413,13 +414,7 @@ const IndiaToursPage = () => {
       <WhyChooseTravique />
       <IndiaTestimonials />
       <IndiaGallery />
-      
-
-      {/* Floating Enquire Button */}
-      <a href="mailto:concierge@travique.com" className="floating-enquire-btn">
-        <span className="enquire-icon">📩</span>
-        <span className="enquire-text">ENQUIRE NOW</span>
-      </a>
+      <Footer />
     </div>
   );
 };

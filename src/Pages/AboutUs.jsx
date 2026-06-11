@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../Components/Footer';
 
 export default function AboutUs() {
   return (
@@ -72,6 +73,7 @@ export default function AboutUs() {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,0 +1,133 @@
+:root {
+  --contact-primary: #003B36;
+  --contact-secondary: #005F5B;
+  --contact-gold: #F5C400;
+  --contact-off-white: #F8F9FA;
+  --contact-text: #1F2937;
+  --contact-muted: #6B7280;
+}
+
+.contact-container {
+  padding: 64px 20px 0;
+}
+
+.contact-hero {
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.contact-title {
+  font-size: 2.4rem;
+  color: var(--contact-primary);
+  margin: 0 0 10px;
+  font-weight: 800;
+}
+
+.contact-subtitle {
+  margin: 0;
+  color: var(--contact-muted);
+  font-size: 1.05rem;
+  max-width: 700px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+  padding-bottom: 56px;
+}
+
+.contact-info {
+  background: rgba(0, 59, 54, 0.03);
+  border: 1px solid rgba(0, 59, 54, 0.08);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.contact-section-title {
+  color: var(--contact-primary);
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+}
+
+.contact-link {
+  color: var(--contact-secondary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  color: var(--contact-gold);
+  text-decoration: underline;
+}
+
+.contact-form {
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 14px 40px rgba(0, 59, 54, 0.08);
+  border: 1px solid rgba(0, 59, 54, 0.06);
+}
+
+.contact-label {
+  display: block;
+  color: var(--contact-primary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 12px;
+}
+
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: var(--contact-off-white);
+  color: var(--contact-text);
+  outline: none;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+  border-color: var(--contact-gold);
+  box-shadow: 0 0 0 3px rgba(245, 196, 0, 0.18);
+}
+
+.contact-textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.contact-submit {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: var(--contact-gold) !important;
+  border: 1px solid var(--contact-gold) !important;
+  color: var(--contact-primary) !important;
+  font-weight: 800;
+}
+
+.contact-submit:hover {
+  background: #e0b200 !important;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-container {
+    padding-top: 48px;
+  }
+
+  .contact-hero {
+    text-align: center;
+  }
+}
+

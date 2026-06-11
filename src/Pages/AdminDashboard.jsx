@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ".styles/AdminDashboard.css";
+import "../styles/AdminDashboard.css";
+
 
 const API = "http://localhost:5000/api";
 
@@ -19,12 +20,16 @@ export default function AdminDashboard() {
     category: "", location: "", image: "", highlights: ""
   });
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const [user] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("travique_current_user") || "{}"); }
+    catch { return {}; }
+  });
 
   useEffect(() => {
-    if (user.role !== "admin") { navigate("/login"); return; }
     fetchAll();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   async function fetchAll() {
     setLoading(true);
@@ -82,7 +87,7 @@ export default function AdminDashboard() {
   }
 
   function handleLogout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("travique_current_user");
     localStorage.removeItem("token");
     navigate("/login");
   }

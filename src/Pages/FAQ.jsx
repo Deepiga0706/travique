@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../Components/Footer';
 
 const faqs = [
   { q: 'How do I book a package?', a: 'You can book by contacting our concierge or using the booking form. We handle all logistics for you.' },
@@ -20,6 +21,7 @@ export default function FAQ() {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

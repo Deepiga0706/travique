@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Footer from '../Components/Footer';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -80,6 +81,7 @@ export default function CategoryPage({ slug: propSlug, title: propTitle }) {
   let items = packages;
 
   return (
+    <div className="page" style={{background:'var(--off-white)',minHeight:'100vh'}}>
     <section className="container category-page" style={{padding:'60px 20px'}}>
       <h2 className="section-title">{title}</h2>
       <p className="muted">Explore curated packages in this category.</p>
@@ -96,7 +98,7 @@ export default function CategoryPage({ slug: propSlug, title: propTitle }) {
       borderRadius: 12,
       overflow: "hidden",
       boxShadow: "0 10px 30px rgba(2,38,35,0.06)",
-      background: '#fff'
+      background: '#f4f8f7'
     }}
   >
     <div
@@ -158,5 +160,7 @@ export default function CategoryPage({ slug: propSlug, title: propTitle }) {
 ))}
       </div>
     </section>
+    <Footer />
+    </div>
   )
 }

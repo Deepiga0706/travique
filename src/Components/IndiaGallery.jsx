@@ -41,7 +41,7 @@ const IndiaGallery = () => {
               <div className="gallery-overlay">
                 <h3 className="gallery-title">{item.title}</h3>
                 <p className="gallery-location">{item.location}</p>
-                <span className="gallery-zoom-icon">🔍</span>
+                
               </div>
             </div>
           ))}
