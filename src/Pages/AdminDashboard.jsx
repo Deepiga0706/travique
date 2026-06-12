@@ -40,12 +40,9 @@ export default function AdminDashboard() {
     }
   });
 
- useEffect(() => {
-  console.log("ADMIN PAGE LOADED");
-  console.log("TOKEN ON ADMIN:", localStorage.getItem("token"));
-  console.log("CURRENT ORIGIN:", window.location.origin);
-
+useEffect(() => {
   fetchAll();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
   async function fetchAll() {
