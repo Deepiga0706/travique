@@ -1,8 +1,12 @@
 # TODO
 
-- [ ] Replace "Special Luxury Offers" section in home page (Offers component) with "Customize Your Dream Vacation" CTA.
-- [ ] Create new page component for route `/customize-trip` with premium hero + responsive form (all required fields) and success message.
-- [ ] Add React Router route for `/customize-trip` in `src/App.js`.
-- [ ] Add dedicated CSS for the new CTA + Customize Trip page, reusing existing Travique green/gold/luxury styles.
-- [ ] Run app/build checks to ensure no import/route errors.
+- [ ] Update `src/Pages/AdminDashboard.jsx` data loading to:
+  - [ ] Add detailed error logging for each failed request (admin fetch error + response payload).
+  - [ ] Replace `Promise.all()` with `Promise.allSettled()` so packages and bookings load independently.
+  - [ ] Handle each response independently (use `[]` fallback when request fails).
+  - [ ] Log exact payloads for successful paths (Packages/Bookings arrays).
+  - [ ] Ensure stats calculations guard against non-arrays using `Array.isArray`.
+  - [ ] Only show toast "Failed to load data" if both requests fail.
+- [ ] Verify dashboard renders packages even when bookings request fails.
+- [ ] Verify console logs show which request failed and include response data.
 

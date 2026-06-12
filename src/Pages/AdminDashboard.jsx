@@ -46,24 +46,61 @@ export default function AdminDashboard() {
 
   async function fetchAll() {
     setLoading(true);
-    try {
-      const [pkgRes, bookRes] = await Promise.all([
-        axios.get(`${API}/packages`),
-        axios.get(`${API}/admin/bookings`, { headers: authHeader() }),
-      ]);
-      const pkgs = pkgRes.data || [];
-      const bkgs = bookRes.data || [];
-      setPackages(pkgs);
-      setBookings(bkgs);
-      setStats({
-        totalPackages: pkgs.length,
-        totalBookings: bkgs.length,
-        totalRevenue: bkgs.reduce((s, b) => s + (b.totalAmount || 0), 0),
-        pendingBookings: bkgs.filter((b) => b.status === "pending").length,
-      });
-    } catch (e) {
+
+    const pkgReq = axios.get(`${API}/packages`);
+    const bookReq = axios.get(`${API}/admin/bookings`, { headers: authHeader() });
+
+    const [pkgRes, bookRes] = await Promise.allSettled([pkgReq, bookReq]);
+
+    let pkgs = [];
+    let bkgs = [];
+
+    // Packages handling
+    if (pkgRes.status === "fulfilled") {
+      const pkgData = pkgRes.value?.data;
+      console.log("Packages Raw Response:", pkgData);
+      pkgs = Array.isArray(pkgData) ? pkgData : pkgData?.packages || [];
+    } else {
+      const err = pkgRes.reason;
+      console.error("Admin fetch error:", err);
+      console.error("Response:", err?.response?.data);
+      pkgs = [];
+    }
+
+    // Bookings handling
+    if (bookRes.status === "fulfilled") {
+      const bookData = bookRes.value?.data;
+      console.log("Bookings Raw Response:", bookData);
+      bkgs = Array.isArray(bookData) ? bookData : bookData?.bookings || [];
+    } else {
+      const err = bookRes.reason;
+      console.error("Admin fetch error:", err);
+      console.error("Response:", err?.response?.data);
+      bkgs = [];
+    }
+
+    // Guard stats calculations
+    const safePkgs = Array.isArray(pkgs) ? pkgs : [];
+    const safeBkgs = Array.isArray(bkgs) ? bkgs : [];
+
+    console.log("Packages:", safePkgs);
+    console.log("Bookings:", safeBkgs);
+
+    setPackages(safePkgs);
+    setBookings(safeBkgs);
+
+    setStats({
+      totalPackages: safePkgs.length,
+      totalBookings: safeBkgs.length,
+      totalRevenue: safeBkgs.reduce((s, b) => s + (b?.totalAmount || 0), 0),
+      pendingBookings: safeBkgs.filter((b) => b?.status === "pending").length,
+    });
+
+    // Only show toast if both requests failed
+    if (pkgRes.status === "rejected" && bookRes.status === "rejected") {
       showToast("Failed to load data", "error");
     }
+
     setLoading(false);
   }
 
