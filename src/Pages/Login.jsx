@@ -29,8 +29,15 @@ export default function Login({ onAuth }) {
 );
      
 
-console.log("LOGIN RESPONSE:", response.data.user);
+console.log("FULL LOGIN RESPONSE:", response.data);
+console.log("LOGIN RESPONSE:", response.data);
+
+      console.log("TOKEN BEFORE STORE:", response.data.token);
       localStorage.setItem("token", response.data.token);
+      console.log("TOKEN AFTER STORE:", localStorage.getItem("token"));
+      console.log("LOCAL STORAGE KEYS:", Object.keys(localStorage));
+      console.log("CURRENT ORIGIN:", window.location.origin);
+
       const oldUser =
   JSON.parse(localStorage.getItem("travique_current_user")) || {};
 

@@ -10,6 +10,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [packages, setPackages] = useState([]);
   const [bookings, setBookings] = useState([]);
+  console.log(bookings);    
   const [stats, setStats] = useState({
     totalPackages: 0,
     totalBookings: 0,
@@ -39,10 +40,13 @@ export default function AdminDashboard() {
     }
   });
 
-  useEffect(() => {
-    fetchAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+ useEffect(() => {
+  console.log("ADMIN PAGE LOADED");
+  console.log("TOKEN ON ADMIN:", localStorage.getItem("token"));
+  console.log("CURRENT ORIGIN:", window.location.origin);
+
+  fetchAll();
+}, []);
 
   async function fetchAll() {
     setLoading(true);
@@ -70,7 +74,9 @@ export default function AdminDashboard() {
     // Bookings handling
     if (bookRes.status === "fulfilled") {
       const bookData = bookRes.value?.data;
-      console.log("Bookings Raw Response:", bookData);
+      console.log("Bookings Raw Response:", JSON.stringify(bookData, null, 2));
+console.log("Type:", typeof bookData);
+console.log("Keys:", Object.keys(bookData || {}));
       bkgs = Array.isArray(bookData) ? bookData : bookData?.bookings || [];
     } else {
       const err = bookRes.reason;
@@ -156,6 +162,7 @@ export default function AdminDashboard() {
   }
 
   function handleLogout() {
+    console.trace("LOGOUT CALLED");
     localStorage.removeItem("travique_current_user");
     localStorage.removeItem("token");
     navigate("/login");
